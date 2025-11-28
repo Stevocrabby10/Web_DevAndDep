@@ -9,7 +9,6 @@
     <meta property="og:type" content="website">
     <title>Darts Hub - Find Local Darts Leagues Near You</title>
     <link rel="stylesheet" href="css/styles.css">
-    <!--<link rel="canonical" href="https://dartshub.example.com">-->
 </head>
 <body>
     <header>
@@ -25,7 +24,7 @@
                     <li><a href="/" class="nav-link">Home</a></li>
                     <li><a href="/leagues" class="nav-link">Leagues</a></li>
                     <li><a href="/rankings" class="nav-link">Rankings</a></li>
-                    <li><a href="/login" class="nav-link">Login</a></li>
+                    <li><a href="/profile" class="nav-link">Profile</a></li>
                     <li><a href="/register" class="nav-link">Register</a></li>
                 </ul>
             </nav>
@@ -40,7 +39,7 @@
                         <p>Search local leagues, check live rankings, and track your performance.</p>
                         <div class="hero-buttons">
                             <a href="#search" class="btn btn-primary">Find Leagues Near Me</a>
-                            <a href="/login" class="btn btn-secondary">Log In</a>
+                            <a href="/profile" class="btn btn-secondary">View Profile</a>
                         </div>
                     </div>
                     <div class="hero-image">
@@ -274,72 +273,6 @@
         </div>
     </footer>
 
-    <script>
-        // Mobile navigation toggle
-        (function() {
-            const navToggle = document.querySelector('.nav-toggle');
-            const primaryNav = document.getElementById('primary-nav');
-            const navBackdrop = document.getElementById('nav-backdrop');
-            const navLinks = document.querySelectorAll('.nav-link');
-            const body = document.body;
-
-            if (!navToggle || !primaryNav || !navBackdrop) return;
-
-            function toggleNav() {
-                const isVisible = primaryNav.getAttribute('data-visible') === 'true';
-                
-                if (isVisible) {
-                    closeNav();
-                } else {
-                    openNav();
-                }
-            }
-
-            function openNav() {
-                primaryNav.setAttribute('data-visible', 'true');
-                navBackdrop.setAttribute('data-visible', 'true');
-                navToggle.setAttribute('aria-expanded', 'true');
-                body.style.overflow = 'hidden'; // Prevent body scrolling when menu is open
-            }
-
-            function closeNav() {
-                primaryNav.setAttribute('data-visible', 'false');
-                navBackdrop.setAttribute('data-visible', 'false');
-                navToggle.setAttribute('aria-expanded', 'false');
-                body.style.overflow = ''; // Restore scrolling
-            }
-
-            // Toggle on button click
-            navToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                toggleNav();
-            });
-
-            // Close on backdrop click
-            navBackdrop.addEventListener('click', closeNav);
-
-            // Close on nav link click
-            navLinks.forEach(link => {
-                link.addEventListener('click', closeNav);
-            });
-
-            // Close on escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && primaryNav.getAttribute('data-visible') === 'true') {
-                    closeNav();
-                }
-            });
-
-            // Close on window resize to desktop size
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 767 && primaryNav.getAttribute('data-visible') === 'true') {
-                    closeNav();
-                }
-            });
-        })();
-
-        // TODO: Hook up geolocation and API calls to /api/leagues?near=...
-        // TODO: Update #searchStatus on search start/end and empty results
-    </script>
+    <script src="js/navigation.js"></script>
 </body>
 </html>
