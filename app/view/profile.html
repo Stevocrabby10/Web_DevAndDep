@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your profile on Darts Hub - Manage your account and view your stats.">
+    <title>Profile - Darts Hub</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .auth-wrapper {
+            min-height: calc(100vh - 200px);
+            padding: var(--spacing-xl) 0;
+        }
+
+        .login-card {
+            max-width: 480px;
+            margin: 0 auto var(--spacing-lg);
+        }
+
+        .login-card h1 {
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-message {
+            margin-top: var(--spacing-sm);
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .form-message.error {
+            color: #f87171;
+        }
+
+        .profile-container {
+            min-height: calc(100vh - 200px);
+            padding: var(--spacing-xl) 0;
+        }
+        
+        .profile-card {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+            align-items: center;
+        }
+        
+        @media (min-width: 768px) {
+            .profile-header {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+        
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--border);
+            background-color: var(--bg);
+            flex-shrink: 0;
+        }
+        
+        @media (max-width: 767px) {
+            .profile-picture {
+                width: 120px;
+                height: 120px;
+                border-width: 4px;
+            }
+        }
+        
+        .profile-info {
+            flex: 1;
+            width: 100%;
+        }
+        
+        .profile-name {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text);
+        }
+
+        .profile-address {
+            font-size: 1rem;
+            color: var(--muted);
+            margin: 0;
+        }
+        
+        @media (max-width: 767px) {
+            .profile-name {
+                font-size: 1.5rem;
+                text-align: center;
+            }
+        }
+        
+        .profile-actions {
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-lg);
+            border-top: 2px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+
+        .logout-button {
+            background-color: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .logout-button:hover,
+        .logout-button:focus {
+            background-color: rgba(96, 165, 250, 0.1);
+        }
+        
+        .delete-account-button {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        
+        @media (min-width: 768px) {
+        .delete-account-button {
+                width: auto;
+            }
+        }
+        
+        .delete-account-button:hover,
+        .delete-account-button:focus {
+            background-color: #dc2626;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+        }
+        
+        .profile-placeholder {
+        .edit-profile-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .edit-profile-form .form-row {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .edit-profile-form .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-status {
+            font-size: 0.95rem;
+            color: var(--muted);
+            min-height: 1.25rem;
+        }
+
+        .form-status.error {
+            color: #f87171;
+        }
+
+        .form-status.success {
+            color: #34d399;
+        }
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: var(--bg);
+            border: 3px solid var(--border);
+            color: var(--muted);
+            font-size: 3rem;
+            flex-shrink: 0;
+        }
+        
+        @media (max-width: 767px) {
+            .profile-placeholder {
+                width: 120px;
+                height: 120px;
+                font-size: 2.5rem;
+                border-width: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="/" class="logo">🎯 Darts Hub</a>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
+                <span class="sr-only">Toggle menu</span>
+                ☰
+            </button>
+            <div class="nav-backdrop" id="nav-backdrop" data-visible="false"></div>
+            <nav id="primary-nav" class="primary-nav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/leagues" class="nav-link">Leagues</a></li>
+                    <li><a href="/rankings" class="nav-link">Rankings</a></li>
+                    <li><a href="/profile" class="nav-link">Profile</a></li>
+                    <li><a href="/register" class="nav-link">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main id="main">
+        <div class="auth-wrapper">
+            <div class="container">
+                <div class="card login-card" id="loginSection" hidden>
+                    <h1>Log In</h1>
+                    <p class="form-message" id="loginInstructions">Please log in to view your profile.</p>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginUsername">Username</label>
+                            <input type="text" id="loginUsername" name="loginUsername" required autocomplete="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" name="loginPassword" required autocomplete="current-password">
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="loginButton">Log In</button>
+                        <p class="form-message" id="loginMessage" role="status"></p>
+                    </form>
+                </div>
+
+                <div class="profile-card card" id="profileSection" hidden>
+                    <div class="profile-header">
+                        <div class="profile-placeholder" aria-label="Profile picture">
+                            👤
+                        </div>
+                        <div class="profile-info">
+                            <h1 class="profile-name" id="userName">User Name</h1>
+                            <p class="profile-address" id="userAddress">No address on file</p>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <div class="action-buttons">
+                            <button type="button" class="btn logout-button" id="logoutBtn">Log Out</button>
+                            <button type="button" class="delete-account-button" id="deleteAccountBtn">
+                                Delete Account
+                            </button>
+                        </div>
+                        <div class="edit-profile">
+                            <h2>Edit Profile</h2>
+                            <form id="editProfileForm" class="edit-profile-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="editUsername">Username</label>
+                                        <input type="text" id="editUsername" name="editUsername" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAddress">Address</label>
+                                        <input type="text" id="editAddress" name="editAddress" placeholder="Enter address">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="saveProfileBtn">Save Changes</button>
+                                <p class="form-status" id="editProfileStatus" role="status"></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-links">
+                <a href="/about" class="footer-link">About</a>
+                <a href="/privacy" class="footer-link">Privacy</a>
+                <a href="/terms" class="footer-link">Terms</a>
+                <a href="/contact" class="footer-link">Contact</a>
+            </div>
+            <small class="copyright">© 2025 Darts Hub</small>
+        </div>
+    </footer>
+
+    <script src="js/navigation.js"></script>
+    <script>
+        const loginSection = document.getElementById('loginSection');
+        const profileSection = document.getElementById('profileSection');
+        const loginMessage = document.getElementById('loginMessage');
+        const loginButton = document.getElementById('loginButton');
+        const loginForm = document.getElementById('loginForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const editProfileForm = document.getElementById('editProfileForm');
+        const editUsernameInput = document.getElementById('editUsername');
+        const editAddressInput = document.getElementById('editAddress');
+        const editProfileStatus = document.getElementById('editProfileStatus');
+        const saveProfileBtn = document.getElementById('saveProfileBtn');
+
+        function showLogin() {
+            loginSection.removeAttribute('hidden');
+            profileSection.setAttribute('hidden', '');
+            loginMessage.textContent = '';
+            loginMessage.classList.remove('error');
+        }
+
+        function showProfile() {
+            profileSection.removeAttribute('hidden');
+            loginSection.setAttribute('hidden', '');
+        }
+
+        // Load user data from session
+        function loadUserData(showLoginOnFail = true) {
+            fetch('/current-user')
+                .then(response => {
+                    if (response.status === 401) {
+                        if (showLoginOnFail) {
+                            showLogin();
+                        }
+                        return null;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data) return;
+                    const username = data.username || 'User';
+                    const address = data.address || 'No address on file';
+                    document.getElementById('userName').textContent = username;
+                    document.getElementById('userAddress').textContent = address;
+                    editUsernameInput.value = data.username || '';
+                    editAddressInput.value = data.address || '';
+                    showProfile();
+                })
+                .catch(error => {
+                    console.error('Error loading user data:', error);
+                    if (showLoginOnFail) {
+                        showLogin();
+                        loginMessage.textContent = 'Unable to load profile. Please log in again.';
+                        loginMessage.classList.add('error');
+                    }
+                });
+        }
+
+        // Login form handling
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!username || !password) {
+                loginMessage.textContent = 'Please fill in both fields.';
+                loginMessage.classList.add('error');
+                return;
+            }
+
+            loginButton.disabled = true;
+            loginButton.textContent = 'Logging in...';
+            loginMessage.textContent = '';
+            loginMessage.classList.remove('error');
+
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username,
+                    password,
+                }),
+            })
+                .then(async (response) => {
+                    const data = await response.json();
+                    if (!response.ok) {
+                        throw new Error(data.msg || 'Login failed');
+                    }
+                    loginMessage.textContent = data.msg || 'Login successful!';
+                    loginMessage.classList.remove('error');
+                    loginButton.disabled = false;
+                    loginButton.textContent = 'Log In';
+                    loadUserData(false);
+                })
+                .catch((error) => {
+                    loginMessage.textContent = error.message || 'Invalid username or password.';
+                    loginMessage.classList.add('error');
+                    loginButton.disabled = false;
+                    loginButton.textContent = 'Log In';
+                });
+        });
+
+        // Logout functionality
+        logoutBtn.addEventListener('click', function () {
+            logoutBtn.disabled = true;
+            logoutBtn.textContent = 'Logging out...';
+
+            fetch('/logout')
+                .then(response => response.json())
+                .then(data => {
+                    const message = data.msg || 'You have been logged out.';
+                    loginMessage.textContent = message;
+                    loginMessage.classList.remove('error');
+                    loginForm.reset();
+                    loginButton.disabled = false;
+                    loginButton.textContent = 'Log In';
+                    showLogin();
+                })
+                .catch(error => {
+                    console.error('Logout error:', error);
+                    loginMessage.textContent = 'Could not log out. Please try again.';
+                    loginMessage.classList.add('error');
+                })
+                .finally(() => {
+                    logoutBtn.disabled = false;
+                    logoutBtn.textContent = 'Log Out';
+                });
+        });
+
+        // Edit profile functionality
+        editProfileForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const newUsername = editUsernameInput.value.trim();
+            const address = editAddressInput.value.trim();
+
+            if (!newUsername) {
+                editProfileStatus.textContent = 'Username cannot be empty.';
+                editProfileStatus.classList.add('error');
+                editProfileStatus.classList.remove('success');
+                return;
+            }
+
+            saveProfileBtn.disabled = true;
+            saveProfileBtn.textContent = 'Saving...';
+            editProfileStatus.textContent = '';
+            editProfileStatus.classList.remove('error', 'success');
+
+            fetch('/profile', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: newUsername,
+                    address,
+                }),
+            })
+                .then(async (response) => {
+                    const data = await response.json();
+                    if (!response.ok) {
+                        throw new Error(data.msg || 'Unable to update profile.');
+                    }
+                    editProfileStatus.textContent = data.msg || 'Profile updated.';
+                    editProfileStatus.classList.add('success');
+                    editProfileStatus.classList.remove('error');
+                    loadUserData(false);
+                })
+                .catch((error) => {
+                    editProfileStatus.textContent = error.message || 'Update failed.';
+                    editProfileStatus.classList.add('error');
+                    editProfileStatus.classList.remove('success');
+                })
+                .finally(() => {
+                    saveProfileBtn.disabled = false;
+                    saveProfileBtn.textContent = 'Save Changes';
+                });
+        });
+        
+        // Delete account functionality
+        document.getElementById('deleteAccountBtn').addEventListener('click', function() {
+            if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                return;
+            }
+            
+            // Double confirmation
+            if (!confirm('This will permanently delete your account. Are you absolutely sure?')) {
+                return;
+            }
+            
+            const deleteButton = this;
+            deleteButton.disabled = true;
+            deleteButton.textContent = 'Deleting...';
+            
+            fetch('/delete-account', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.msg) {
+                    alert(data.msg);
+                    // Redirect to home page after account deletion
+                    window.location.href = '/';
+                } else {
+                    alert('Error deleting account. Please try again.');
+                    deleteButton.disabled = false;
+                    deleteButton.textContent = 'Delete Account';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+                deleteButton.disabled = false;
+                deleteButton.textContent = 'Delete Account';
+            });
+        });
+        
+        // Load user data on page load
+        loadUserData();
+    </script>
+</body>
+</html>
+

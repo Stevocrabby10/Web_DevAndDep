@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Register for Darts Hub - Join local darts leagues and track your performance.">
+    <title>Register - Darts Hub</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .register-container {
+            min-height: calc(100vh - 200px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-xl) 0;
+        }
+        
+        .register-card {
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .register-card h1 {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+            font-size: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            color: var(--text);
+            font-weight: 500;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: var(--spacing-sm);
+            background-color: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+        
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+        }
+        
+        .register-button {
+            width: 100%;
+            margin-top: var(--spacing-md);
+        }
+        
+        .register-footer {
+            text-align: center;
+            margin-top: var(--spacing-md);
+            color: var(--muted);
+        }
+        
+        .register-footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .register-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="/" class="logo">🎯 Darts Hub</a>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
+                <span class="sr-only">Toggle menu</span>
+                ☰
+            </button>
+            <div class="nav-backdrop" id="nav-backdrop" data-visible="false"></div>
+            <nav id="primary-nav" class="primary-nav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/leagues" class="nav-link">Leagues</a></li>
+                    <li><a href="/rankings" class="nav-link">Rankings</a></li>
+                    <li><a href="/profile" class="nav-link">Profile</a></li>
+                    <li><a href="/register" class="nav-link">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main id="main">
+        <div class="register-container">
+            <div class="container">
+                <div class="register-card card">
+                    <h1>Register</h1>
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required aria-describedby="usernameHelp">
+                            <small id="usernameHelp" class="help-text sr-only">Enter your desired username</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required aria-describedby="passwordHelp">
+                            <small id="passwordHelp" class="help-text sr-only">Enter a secure password</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary register-button">Register</button>
+                    </form>
+                    <div class="register-footer">
+                        <p>Already have an account? <a href="/profile">View Profile</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-links">
+                <a href="/about" class="footer-link">About</a>
+                <a href="/privacy" class="footer-link">Privacy</a>
+                <a href="/terms" class="footer-link">Terms</a>
+                <a href="/contact" class="footer-link">Contact</a>
+            </div>
+            <small class="copyright">© 2025 Darts Hub</small>
+        </div>
+    </footer>
+
+    <script src="js/navigation.js"></script>
+    <script>
+        // Register form handling
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const submitButton = this.querySelector('button[type="submit"]');
+            
+            if (!username || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Disable button during submission
+            submitButton.disabled = true;
+            submitButton.textContent = 'Registering...';
+            
+            // Send registration request
+            fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.msg) {
+                    alert(data.msg);
+                    if (data.msg.includes('successful')) {
+                        // Redirect to profile page after successful registration
+                        window.location.href = '/profile';
+                    }
+                } else {
+                    alert('Registration failed. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            })
+            .finally(() => {
+                // Re-enable button
+                submitButton.disabled = false;
+                submitButton.textContent = 'Register';
+            });
+        });
+    </script>
+</body>
+</html>
+

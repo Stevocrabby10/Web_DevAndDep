@@ -6,13 +6,18 @@ http.createServer(function (req, res)
 {
     var q = url.parse(req.url, true);
     var file;
-    if (q.pathname == '/') {
+    if (q.pathname == '/') 
         file = (__dirname + "/../view" + "/index.html");
         // __dirname is where the current script is, e.g. the 'controller' folder
-    } else {
+    else {
         file = (__dirname + "/../view" + q.pathname);
-        // files to be sent to the client are on the 'view' folder
+        // If no file extension, try adding .html for cleaner URLs
+        if (!q.pathname.includes('.')) {
+            file = file + ".html";
+        }
     }
+        // files to be sent to the client are on the 'view' folder
+    
 
     fs.readFile(file, function(err, data){
         if (err) 

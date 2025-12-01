@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View darts player rankings, league standings, and performance statistics on Darts Hub.">
+    <meta property="og:title" content="Player Rankings - Darts Hub">
+    <meta property="og:description" content="Check out the top players and their rankings across all darts leagues.">
+    <meta property="og:type" content="website">
+    <title>Rankings - Darts Hub</title>
+    <!-- Bootstrap Icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body id="page-top">
+    <header>
+        <div class="container header-content">
+            <a href="/" class="logo">🎯 Darts Hub</a>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
+                <span class="sr-only">Toggle menu</span>
+                ☰
+            </button>
+            <div class="nav-backdrop" id="nav-backdrop" data-visible="false"></div>
+            <nav id="primary-nav" class="primary-nav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/leagues" class="nav-link">Leagues</a></li>
+                    <li><a href="/rankings" class="nav-link">Rankings</a></li>
+                    <li><a href="/profile" class="nav-link">Profile</a></li>
+                    <li><a href="/register" class="nav-link">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <!-- Hero Section -->
+        <section class="page-section bg-dark text-white py-5">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center text-center">
+                    <div class="col-lg-8">
+                        <h1 class="display-4 mb-4">Player Rankings</h1>
+                        <hr class="divider divider-light mb-4" />
+                        <p class="lead text-white-75 mb-4">Track the top-performing darts players across all leagues and regions. View player statistics, averages, and performance metrics.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Section -->
+        <section class="page-section">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
+                    <div class="col-lg-10">
+                        <div class="filter-controls">
+                            <div class="row gx-3">
+                                <div class="col-md-4 mb-3">
+                                    <label for="regionFilter" class="form-label">Filter by Region</label>
+                                    <select class="form-select" id="regionFilter">
+                                        <option value="all" selected>All Regions</option>
+                                        <option value="dublin">Dublin</option>
+                                        <option value="galway">Galway</option>
+                                        <option value="cork">Cork</option>
+                                        <option value="wexford">Wexford</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="timeframeFilter" class="form-label">Time Period</label>
+                                    <select class="form-select" id="timeframeFilter">
+                                        <option value="week" selected>This Week</option>
+                                        <option value="month">This Month</option>
+                                        <option value="season">This Season</option>
+                                        <option value="alltime">All Time</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="statFilter" class="form-label">Sort By</label>
+                                    <select class="form-select" id="statFilter">
+                                        <option value="points" selected>Points</option>
+                                        <option value="average">Average</option>
+                                        <option value="wins">Wins</option>
+                                        <option value="winrate">Win Rate</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Overall Top Players Table -->
+                <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
+                    <div class="col-lg-10">
+                        <div class="card ranking-card">
+                            <div class="card-header bg-primary text-white">
+                                <h2 class="h5 mb-0"><i class="bi-trophy me-2"></i>Top 10 Players (This Week)</h2>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0 ranking-table">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col" class="text-center" style="width: 60px;">Rank</th>
+                                                <th scope="col">Player Name</th>
+                                                <th scope="col" class="text-center">Region</th>
+                                                <th scope="col" class="text-center">League</th>
+                                                <th scope="col" class="text-center">Matches</th>
+                                                <th scope="col" class="text-center">Wins</th>
+                                                <th scope="col" class="text-center">Win %</th>
+                                                <th scope="col" class="text-center">3-Dart Avg</th>
+                                                <th scope="col" class="text-center">Points</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center"><span class="badge bg-success">1</span></td>
+                                                <td><strong>John Smith</strong></td>
+                                                <td class="text-center">Dublin</td>
+                                                <td>Dublin City</td>
+                                                <td class="text-center">15</td>
+                                                <td class="text-center">14</td>
+                                                <td class="text-center"><span class="badge bg-success">93%</span></td>
+                                                <td class="text-center"><strong>87.42</strong></td>
+                                                <td class="text-center"><strong>285</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><span class="badge bg-secondary">2</span></td>
+                                                <td>Mary O'Connor</td>
+                                                <td class="text-center">Dublin</td>
+                                                <td>Southside Arrows</td>
+                                                <td class="text-center">14</td>
+                                                <td class="text-center">13</td>
+                                                <td class="text-center"><span class="badge bg-success">93%</span></td>
+                                                <td class="text-center">85.67</td>
+                                                <td class="text-center">278</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><span class="badge bg-secondary">3</span></td>
+                                                <td>James Murphy</td>
+                                                <td class="text-center">Galway</td>
+                                                <td>Galway Bay</td>
+                                                <td class="text-center">16</td>
+                                                <td class="text-center">14</td>
+                                                <td class="text-center"><span class="badge bg-success">88%</span></td>
+                                                <td class="text-center">84.32</td>
+                                                <td class="text-center">272</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><span class="badge">4</span></td>
+                                                <td>Sarah Kelly</td>
+                                                <td class="text-center">Dublin</td>
+                                                <td>Dublin City</td>
+                                                <td class="text-center">15</td>
+                                                <td class="text-center">13</td>
+                                                <td class="text-center"><span class="badge bg-info">87%</span></td>
+                                                <td class="text-center">83.89</td>
+                                                <td class="text-center">265</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><span class="badge">5</span></td>
+                                                <td>Michael Walsh</td>
+                                                <td class="text-center">Cork</td>
+                                                <td>Rebel County</td>
+                                                <td class="text-center">14</td>
+                                                <td class="text-center">12</td>
+                                                <td class="text-center"><span class="badge bg-info">86%</span></td>
+                                                <td class="text-center">82.15</td>
+                                                <td class="text-center">258</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><span class="badge">6</span></td>
+                                                <td>Emma Thompson</td>
+                                                <td class="text-center">Wexford</td>
+                                                <td>Wexford Town</td>
+                                                <td class="text-center">13</td>
+                                                <td class="text-center">11</td>
+                                                <td class="text-center"><span class="badge bg-info">85%</span></td>
+                                                <td class="text-center">81.43</td>
+                                                <td class="text-center">251</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><span class="badge">7</span></td>
+                                                <td>Patrick O'Brien</td>
+                                                <td class="text-center">Galway</td>
+                                                <td>Connemara Championship</td>
+                                                <td class="text-center">15</td>
+                                                <td class="text-center">12</td>
+                                                <td class="text-center"><span class="badge bg-warning text-dark">80%</span></td>
+                                                <td class="text-center">80.76</td>
+                                                <td class="text-center">244</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><span class="badge">8</span></td>
+                                                <td>Lisa Ryan</td>
+                                                <td class="text-center">Cork</td>
+                                                <td>Cork Harbour Arrows</td>
+                                                <td class="text-center">14</td>
+                                                <td class="text-center">11</td>
+                                                <td class="text-center"><span class="badge bg-warning text-dark">79%</span></td>
+                                                <td class="text-center">80.12</td>
+                                                <td class="text-center">237</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><span class="badge">9</span></td>
+                                                <td>David Lynch</td>
+                                                <td class="text-center">Dublin</td>
+                                                <td>Northside Premier</td>
+                                                <td class="text-center">16</td>
+                                                <td class="text-center">12</td>
+                                                <td class="text-center"><span class="badge bg-warning text-dark">75%</span></td>
+                                                <td class="text-center">79.54</td>
+                                                <td class="text-center">230</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><span class="badge">10</span></td>
+                                                <td>Catherine Hayes</td>
+                                                <td class="text-center">Wexford</td>
+                                                <td>Enniscorthy Championship</td>
+                                                <td class="text-center">13</td>
+                                                <td class="text-center">10</td>
+                                                <td class="text-center"><span class="badge bg-warning text-dark">77%</span></td>
+                                                <td class="text-center">79.23</td>
+                                                <td class="text-center">223</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Regional Rankings Section -->
+                <div class="row gx-4 gx-lg-5 mb-5">
+                    <!-- Dublin Rankings -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="card ranking-card">
+                            <div class="card-header bg-info text-white">
+                                <h3 class="h6 mb-0"><i class="bi-pin-map me-2"></i>Top Players - Dublin</h3>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col" style="width: 40px;">Rank</th>
+                                                <th scope="col">Player</th>
+                                                <th scope="col" class="text-center">Avg</th>
+                                                <th scope="col" class="text-center">Pts</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="badge bg-success">1</span></td>
+                                                <td>John Smith</td>
+                                                <td class="text-center">87.42</td>
+                                                <td class="text-center"><strong>285</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">2</span></td>
+                                                <td>Mary O'Connor</td>
+                                                <td class="text-center">85.67</td>
+                                                <td class="text-center">278</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">3</span></td>
+                                                <td>Sarah Kelly</td>
+                                                <td class="text-center">83.89</td>
+                                                <td class="text-center">265</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">4</span></td>
+                                                <td>David Lynch</td>
+                                                <td class="text-center">79.54</td>
+                                                <td class="text-center">230</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">5</span></td>
+                                                <td>Angela Ford</td>
+                                                <td class="text-center">78.21</td>
+                                                <td class="text-center">218</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Galway Rankings -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="card ranking-card">
+                            <div class="card-header bg-success text-white">
+                                <h3 class="h6 mb-0"><i class="bi-pin-map me-2"></i>Top Players - Galway</h3>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col" style="width: 40px;">Rank</th>
+                                                <th scope="col">Player</th>
+                                                <th scope="col" class="text-center">Avg</th>
+                                                <th scope="col" class="text-center">Pts</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="badge bg-success">1</span></td>
+                                                <td>James Murphy</td>
+                                                <td class="text-center">84.32</td>
+                                                <td class="text-center"><strong>272</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">2</span></td>
+                                                <td>Patrick O'Brien</td>
+                                                <td class="text-center">80.76</td>
+                                                <td class="text-center">244</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">3</span></td>
+                                                <td>Siobhan Doyle</td>
+                                                <td class="text-center">77.93</td>
+                                                <td class="text-center">215</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">4</span></td>
+                                                <td>Declan Kelly</td>
+                                                <td class="text-center">76.45</td>
+                                                <td class="text-center">206</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">5</span></td>
+                                                <td>Fiona Reilly</td>
+                                                <td class="text-center">75.12</td>
+                                                <td class="text-center">198</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cork Rankings -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="card ranking-card">
+                            <div class="card-header bg-danger text-white">
+                                <h3 class="h6 mb-0"><i class="bi-pin-map me-2"></i>Top Players - Cork</h3>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col" style="width: 40px;">Rank</th>
+                                                <th scope="col">Player</th>
+                                                <th scope="col" class="text-center">Avg</th>
+                                                <th scope="col" class="text-center">Pts</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="badge bg-success">1</span></td>
+                                                <td>Michael Walsh</td>
+                                                <td class="text-center">82.15</td>
+                                                <td class="text-center"><strong>258</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">2</span></td>
+                                                <td>Lisa Ryan</td>
+                                                <td class="text-center">80.12</td>
+                                                <td class="text-center">237</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">3</span></td>
+                                                <td>Brendan McCarthy</td>
+                                                <td class="text-center">78.54</td>
+                                                <td class="text-center">221</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">4</span></td>
+                                                <td>Aisling Connor</td>
+                                                <td class="text-center">76.89</td>
+                                                <td class="text-center">209</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">5</span></td>
+                                                <td>Noel Shea</td>
+                                                <td class="text-center">74.23</td>
+                                                <td class="text-center">192</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wexford Rankings -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="card ranking-card">
+                            <div class="card-header bg-warning text-dark">
+                                <h3 class="h6 mb-0"><i class="bi-pin-map me-2"></i>Top Players - Wexford</h3>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col" style="width: 40px;">Rank</th>
+                                                <th scope="col">Player</th>
+                                                <th scope="col" class="text-center">Avg</th>
+                                                <th scope="col" class="text-center">Pts</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="badge bg-success">1</span></td>
+                                                <td>Emma Thompson</td>
+                                                <td class="text-center">81.43</td>
+                                                <td class="text-center"><strong>251</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">2</span></td>
+                                                <td>Catherine Hayes</td>
+                                                <td class="text-center">79.23</td>
+                                                <td class="text-center">223</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">3</span></td>
+                                                <td>Padraig Dunne</td>
+                                                <td class="text-center">77.65</td>
+                                                <td class="text-center">210</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">4</span></td>
+                                                <td>Niamh Walsh</td>
+                                                <td class="text-center">75.41</td>
+                                                <td class="text-center">201</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge">5</span></td>
+                                                <td>Liam Murphy</td>
+                                                <td class="text-center">73.88</td>
+                                                <td class="text-center">187</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-light py-5">
+        <div class="container px-4 px-lg-5">
+            <div class="text-center text-muted">
+                <small>&copy; 2025 Darts Hub. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/navigation.js"></script>
+</body>
+</html>
