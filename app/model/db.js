@@ -39,16 +39,31 @@ export function selectUserPwd(username, callback) {
     const con = mysql.createConnection(details);
 
     con.connect(function (err) {
-        if (err) throw err;
+        if (err) {
+            console.error("Database connection error:", err);
+            callback(null);
+            return;
+        }
         con.execute(
           'SELECT password FROM users WHERE username=?',
           [username],
           function (err, result, fields) {
-            if (err) throw err;
-            console.log("From DB: " + result);
+            if (err) {
+                console.error("Database query error:", err);
+                callback(null);
+                return;
+            }
+            console.log("From DB: " + JSON.stringify(result));
             callback(result);
+            con.end(); // Close the connection
           }
         );
+    });
+    
+    // Handle connection errors
+    con.on('error', function(err) {
+        console.error("Database connection error:", err);
+        callback(null);
     });
 }
 
@@ -120,6 +135,79 @@ export function updateUser(username, newUsername, address, callback) {
     });
 }
 
+// ============================================
+// REVIEWS MODEL FUNCTIONS
+// ============================================
+
+// Select all reviews (public)
+export function selectReviews(callback) {
+    const con = mysql.createConnection(details);
+    con.connect(function (err) {
+        if (err) throw err;
+        con.query(
+            "SELECT * FROM reviews ORDER BY created_at DESC",
+            function (err, result) {
+                if (err) throw err;
+                callback(result);
+            }
+        );
+    });
+}
+
+// Insert a new review (private)
+export function insertReview(review, callback) {
+    const con = mysql.createConnection(details);
+    const sql =
+        "INSERT INTO reviews (league_name, reviewer, rating, comment) VALUES (?, ?, ?, ?)";
+
+    con.connect(function (err) {
+        if (err) throw err;
+        con.query(
+            sql,
+            Object.values(review),
+            function (err, result) {
+                if (err) throw err;
+                callback(result.insertId);
+            }
+        );
+    });
+}
+
+// Update a review (private)
+export function updateReview(id, review, callback) {
+    const con = mysql.createConnection(details);
+    const sql =
+        "UPDATE reviews SET league_name=?, rating=?, comment=? WHERE id=?";
+
+    con.connect(function (err) {
+        if (err) throw err;
+        con.query(
+            sql,
+            [...Object.values(review), id],
+            function (err, result) {
+                if (err) throw err;
+                callback(result);
+            }
+        );
+    });
+}
+
+// Delete a review (private)
+export function deleteReview(id, callback) {
+    const con = mysql.createConnection(details);
+    con.connect(function (err) {
+        if (err) throw err;
+        con.query(
+            "DELETE FROM reviews WHERE id=?",
+            [id],
+            function (err, result) {
+                if (err) throw err;
+                callback(result);
+            }
+        );
+    });
+}
+
 export default {
     selectUsers,
     selectUser,
@@ -128,4 +216,8 @@ export default {
     deleteUser,
     selectUserByUsername,
     updateUser,
+    selectReviews,
+    insertReview,
+    updateReview,
+    deleteReview,
 };

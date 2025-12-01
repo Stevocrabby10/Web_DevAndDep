@@ -227,7 +227,7 @@
     <main id="main">
         <div class="auth-wrapper">
             <div class="container">
-                <div class="card login-card" id="loginSection" hidden>
+                <div class="card login-card" id="loginSection">
                     <h1>Log In</h1>
                     <p class="form-message" id="loginInstructions">Please log in to view your profile.</p>
                     <form id="loginForm">
@@ -324,18 +324,39 @@
 
         // Load user data from session
         function loadUserData(showLoginOnFail = true) {
-            fetch('/current-user')
-                .then(response => {
+            fetch('/current-user', {
+                credentials: 'include'
+            })
+                .then(async response => {
+                    // Handle 401 (not logged in) - this is normal
                     if (response.status === 401) {
-                        if (showLoginOnFail) {
-                            showLogin();
-                        }
                         return null;
                     }
-                    return response.json();
+
+                    // Try to parse JSON response
+                    try {
+                        const data = await response.json();
+                        if (response.ok && data.username) {
+                            return data;
+                        }
+                    } catch (e) {
+                        // If JSON parsing fails, user is probably not logged in
+                        return null;
+                    }
+                    return null;
                 })
                 .then(data => {
-                    if (!data) return;
+                    if (!data) {
+                        // Not logged in - show login form silently
+                        if (showLoginOnFail) {
+                            showLogin();
+                            loginMessage.textContent = '';
+                            loginMessage.classList.remove('error');
+                        }
+                        return;
+                    }
+                    
+                    // User is logged in - load profile
                     const username = data.username || 'User';
                     const address = data.address || 'No address on file';
                     document.getElementById('userName').textContent = username;
@@ -344,12 +365,12 @@
                     editAddressInput.value = data.address || '';
                     showProfile();
                 })
-                .catch(error => {
-                    console.error('Error loading user data:', error);
+                .catch(() => {
+                    // Silently handle any errors - just show login form
                     if (showLoginOnFail) {
                         showLogin();
-                        loginMessage.textContent = 'Unable to load profile. Please log in again.';
-                        loginMessage.classList.add('error');
+                        loginMessage.textContent = '';
+                        loginMessage.classList.remove('error');
                     }
                 });
         }
@@ -376,21 +397,49 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include', // Important: include cookies/session
                 body: JSON.stringify({
                     username,
                     password,
                 }),
             })
                 .then(async (response) => {
-                    const data = await response.json();
+                    // Check if response is JSON before parsing
+                    const contentType = response.headers.get('content-type');
+                    let data;
+                    
+                    if (contentType && contentType.includes('application/json')) {
+                        try {
+                            data = await response.json();
+                        } catch (parseError) {
+                            console.error('JSON parse error:', parseError);
+                            throw new Error('Invalid response from server');
+                        }
+                    } else {
+                        // If not JSON, try to get text for error message
+                        const text = await response.text();
+                        console.error('Non-JSON response:', text);
+                        throw new Error('Invalid response from server');
+                    }
+                    
                     if (!response.ok) {
                         throw new Error(data.msg || 'Login failed');
                     }
+                    
+                    console.log('=== LOGIN SUCCESS ===');
+                    console.log('Response data:', data);
+                    console.log('Cookies after login:', document.cookie);
+                    
                     loginMessage.textContent = data.msg || 'Login successful!';
                     loginMessage.classList.remove('error');
                     loginButton.disabled = false;
                     loginButton.textContent = 'Log In';
-                    loadUserData(false);
+                    
+                    // Small delay to ensure session cookie is set before loading user data
+                    setTimeout(() => {
+                        console.log('Loading user data after login...');
+                        loadUserData(false);
+                    }, 100);
                 })
                 .catch((error) => {
                     loginMessage.textContent = error.message || 'Invalid username or password.';
@@ -405,7 +454,9 @@
             logoutBtn.disabled = true;
             logoutBtn.textContent = 'Logging out...';
 
-            fetch('/logout')
+            fetch('/logout', {
+                credentials: 'include' // Important: include cookies/session
+            })
                 .then(response => response.json())
                 .then(data => {
                     const message = data.msg || 'You have been logged out.';
@@ -450,6 +501,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include', // Important: include cookies/session
                 body: JSON.stringify({
                     username: newUsername,
                     address,
@@ -495,7 +547,8 @@
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
+                credentials: 'include' // Important: include cookies/session
             })
             .then(response => response.json())
             .then(data => {
@@ -517,7 +570,8 @@
             });
         });
         
-        // Load user data on page load
+        // Show login form by default, then try to load user data
+        showLogin();
         loadUserData();
     </script>
 </body>
