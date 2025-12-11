@@ -227,7 +227,7 @@
     <main id="main">
         <div class="auth-wrapper">
             <div class="container">
-                <div class="card login-card" id="loginSection">
+                <div class="card login-card" id="loginSection" hidden>
                     <h1>Log In</h1>
                     <p class="form-message" id="loginInstructions">Please log in to view your profile.</p>
                     <form id="loginForm">
@@ -272,6 +272,16 @@
                                     <div class="form-group">
                                         <label for="editAddress">Address</label>
                                         <input type="text" id="editAddress" name="editAddress" placeholder="Enter address">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="editTeam">Team</label>
+                                        <input type="text" id="editTeam" name="editTeam" placeholder="Enter your team name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editLeagues">Leagues</label>
+                                        <input type="text" id="editLeagues" name="editLeagues" placeholder="Enter leagues (comma separated)">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary" id="saveProfileBtn">Save Changes</button>
@@ -324,39 +334,18 @@
 
         // Load user data from session
         function loadUserData(showLoginOnFail = true) {
-            fetch('/current-user', {
-                credentials: 'include'
-            })
-                .then(async response => {
-                    // Handle 401 (not logged in) - this is normal
+            fetch('/current-user')
+                .then(response => {
                     if (response.status === 401) {
-                        return null;
-                    }
-
-                    // Try to parse JSON response
-                    try {
-                        const data = await response.json();
-                        if (response.ok && data.username) {
-                            return data;
-                        }
-                    } catch (e) {
-                        // If JSON parsing fails, user is probably not logged in
-                        return null;
-                    }
-                    return null;
-                })
-                .then(data => {
-                    if (!data) {
-                        // Not logged in - show login form silently
                         if (showLoginOnFail) {
                             showLogin();
-                            loginMessage.textContent = '';
-                            loginMessage.classList.remove('error');
                         }
-                        return;
+                        return null;
                     }
-                    
-                    // User is logged in - load profile
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data) return;
                     const username = data.username || 'User';
                     const address = data.address || 'No address on file';
                     document.getElementById('userName').textContent = username;
@@ -365,12 +354,12 @@
                     editAddressInput.value = data.address || '';
                     showProfile();
                 })
-                .catch(() => {
-                    // Silently handle any errors - just show login form
+                .catch(error => {
+                    console.error('Error loading user data:', error);
                     if (showLoginOnFail) {
                         showLogin();
-                        loginMessage.textContent = '';
-                        loginMessage.classList.remove('error');
+                        loginMessage.textContent = 'Unable to load profile. Please log in again.';
+                        loginMessage.classList.add('error');
                     }
                 });
         }
@@ -397,49 +386,21 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include', // Important: include cookies/session
                 body: JSON.stringify({
                     username,
                     password,
                 }),
             })
                 .then(async (response) => {
-                    // Check if response is JSON before parsing
-                    const contentType = response.headers.get('content-type');
-                    let data;
-                    
-                    if (contentType && contentType.includes('application/json')) {
-                        try {
-                            data = await response.json();
-                        } catch (parseError) {
-                            console.error('JSON parse error:', parseError);
-                            throw new Error('Invalid response from server');
-                        }
-                    } else {
-                        // If not JSON, try to get text for error message
-                        const text = await response.text();
-                        console.error('Non-JSON response:', text);
-                        throw new Error('Invalid response from server');
-                    }
-                    
+                    const data = await response.json();
                     if (!response.ok) {
                         throw new Error(data.msg || 'Login failed');
                     }
-                    
-                    console.log('=== LOGIN SUCCESS ===');
-                    console.log('Response data:', data);
-                    console.log('Cookies after login:', document.cookie);
-                    
                     loginMessage.textContent = data.msg || 'Login successful!';
                     loginMessage.classList.remove('error');
                     loginButton.disabled = false;
                     loginButton.textContent = 'Log In';
-                    
-                    // Small delay to ensure session cookie is set before loading user data
-                    setTimeout(() => {
-                        console.log('Loading user data after login...');
-                        loadUserData(false);
-                    }, 100);
+                    loadUserData(false);
                 })
                 .catch((error) => {
                     loginMessage.textContent = error.message || 'Invalid username or password.';
@@ -454,9 +415,7 @@
             logoutBtn.disabled = true;
             logoutBtn.textContent = 'Logging out...';
 
-            fetch('/logout', {
-                credentials: 'include' // Important: include cookies/session
-            })
+            fetch('/logout')
                 .then(response => response.json())
                 .then(data => {
                     const message = data.msg || 'You have been logged out.';
@@ -501,7 +460,6 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include', // Important: include cookies/session
                 body: JSON.stringify({
                     username: newUsername,
                     address,
@@ -547,8 +505,7 @@
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                },
-                credentials: 'include' // Important: include cookies/session
+                }
             })
             .then(response => response.json())
             .then(data => {
@@ -570,8 +527,7 @@
             });
         });
         
-        // Show login form by default, then try to load user data
-        showLogin();
+        // Load user data on page load
         loadUserData();
     </script>
 </body>

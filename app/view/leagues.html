@@ -24,7 +24,7 @@
                     <li><a href="/" class="nav-link">Home</a></li>
                     <li><a href="/leagues" class="nav-link">Leagues</a></li>
                     <li><a href="/rankings" class="nav-link">Rankings</a></li>
-                    <li><a href="/profile" class="nav-link">Profile</a></li>
+                    <li><a href="/profile" class="nav-link">Login</a></li>
                     <li><a href="/register" class="nav-link">Register</a></li>
                 </ul>
             </nav>
@@ -42,26 +42,50 @@
             </div>
         </section>
 
-
-
-
-
-
-            
-
-
-
-
-
-
-
+        <!-- Search and Filter Section -->
+        <section id="search-filter" class="page-section bg-dark text-white">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="search-form">
+                            <div class="row gx-3 mb-3">
+                                <div class="col-md-8">
+                                    <label for="leagueSearch" class="form-label">Search Leagues</label>
+                                    <input type="text" class="form-control" id="leagueSearch" 
+                                           placeholder="Search by league name or venue..." 
+                                           aria-describedby="searchHelp">
+                                    <small id="searchHelp" class="form-text text-white-50">Type the name of a league or pub to find it</small>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="locationFilter" class="form-label">Filter by Location</label>
+                                    <select class="form-select" id="locationFilter" aria-describedby="locationHelp">
+                                        <option value="">All Locations</option>
+                                        <option value="dublin">Dublin</option>
+                                        <option value="galway">Galway</option>
+                                        <option value="cork">Cork</option>
+                                        <option value="limerick">Limerick</option>
+                                        <option value="waterford">Waterford</option>
+                                        <option value="wicklow">Wicklow</option>
+                                        <option value="wexford">Wexford</option>
+                                    </select>
+                                    <small id="locationHelp" class="form-text text-white-50">Filter by county or city</small>
+                                </div>
+                            </div>
+                            <div id="searchStatus" aria-live="polite" class="sr-only"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Dublin Section -->
         <section id="dublin-leagues" class="leagues-by-area">
             <div class="container">
                 <h2>Dublin</h2>
-                <div class="grid league-grid">
-                    <article class="card league-card" data-league="Dublin City Darts League">
+                <div class="carousel-wrapper">
+                    <div class="carousel-viewport">
+                        <div class="carousel-container league-grid" id="dublin-carousel">
+                    <article class="card league-card" data-league="dublin-city">
                         <div class="league-card-image">
                             <img src="/img/pub-dart-1.jpg" alt="Traditional pub with darts board" loading="lazy">
                         </div>
@@ -72,29 +96,10 @@
                                 <span class="info-item">📍 Dublin City Centre</span>
                                 <span class="info-item">📅 Next Match: Nov 5, 2025</span>
                             </div>
-                            <a href="/leagues/dublin-city" class="btn btn-secondary">View League</a>
-                        </div>
-                        <div class="reviews-section" data-league-reviews="Dublin City Darts League">
-                            <h4>Reviews</h4>
-                            <div class="reviews-list"></div>
-                            <div class="review-form-container" style="display: none;">
-                                <form class="review-form">
-                                    <div class="form-group">
-                                        <label>Rating (1-5)</label>
-                                        <input type="number" name="rating" min="1" max="5" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Comment</label>
-                                        <textarea name="comment" rows="3" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                                    <button type="button" class="btn btn-secondary cancel-review">Cancel</button>
-                                </form>
-                            </div>
-                            <button class="btn btn-secondary add-review-btn" style="display: none;">Add Review</button>
+                            <button type="button" class="btn btn-secondary view-league" data-league="dublin-city">View League</button>
                         </div>
                     </article>
-                    <article class="card league-card" data-league="Southside Arrows League">
+                    <article class="card league-card" data-league="southside-arrows">
                         <div class="league-card-image">
                             <img src="/img/pub-dart-2.jpeg" alt="Modern bar with darts setup" loading="lazy">
                         </div>
@@ -105,29 +110,10 @@
                                 <span class="info-item">📍 South Dublin</span>
                                 <span class="info-item">📅 Next Match: Nov 7, 2025</span>
                             </div>
-                            <a href="/leagues/southside-arrows" class="btn btn-secondary">View League</a>
-                        </div>
-                        <div class="reviews-section" data-league-reviews="Southside Arrows League">
-                            <h4>Reviews</h4>
-                            <div class="reviews-list"></div>
-                            <div class="review-form-container" style="display: none;">
-                                <form class="review-form">
-                                    <div class="form-group">
-                                        <label>Rating (1-5)</label>
-                                        <input type="number" name="rating" min="1" max="5" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Comment</label>
-                                        <textarea name="comment" rows="3" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                                    <button type="button" class="btn btn-secondary cancel-review">Cancel</button>
-                                </form>
-                            </div>
-                            <button class="btn btn-secondary add-review-btn" style="display: none;">Add Review</button>
+                            <button type="button" class="btn btn-secondary view-league" data-league="southside-arrows">View League</button>
                         </div>
                     </article>
-                    <article class="card league-card" data-league="Northside Premier Division">
+                    <article class="card league-card" data-league="northside-premier">
                         <div class="league-card-image">
                             <img src="/img/pub-dart-3.jpeg" alt="Professional darts tournament" loading="lazy">
                         </div>
@@ -138,28 +124,86 @@
                                 <span class="info-item">📍 North Dublin</span>
                                 <span class="info-item">📅 Next Match: Nov 8, 2025</span>
                             </div>
-                            <a href="/leagues/northside-premier" class="btn btn-secondary">View League</a>
-                        </div>
-                        <div class="reviews-section" data-league-reviews="Northside Premier Division">
-                            <h4>Reviews</h4>
-                            <div class="reviews-list"></div>
-                            <div class="review-form-container" style="display: none;">
-                                <form class="review-form">
-                                    <div class="form-group">
-                                        <label>Rating (1-5)</label>
-                                        <input type="number" name="rating" min="1" max="5" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Comment</label>
-                                        <textarea name="comment" rows="3" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                                    <button type="button" class="btn btn-secondary cancel-review">Cancel</button>
-                                </form>
-                            </div>
-                            <button class="btn btn-secondary add-review-btn" style="display: none;">Add Review</button>
+                            <button type="button" class="btn btn-secondary view-league" data-league="northside-premier">View League</button>
                         </div>
                     </article>
+                    <article class="card league-card" data-league="dublin-west">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-1.jpg" alt="Traditional pub with darts board" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Dublin West Darts</h3>
+                            <p class="league-venue">The Gravediggers</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 West Dublin</span>
+                                <span class="info-item">📅 Next Match: Nov 9, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="dublin-west">View League</button>
+                        </div>
+                    </article>
+                    <article class="card league-card" data-league="dublin-elite">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-2.jpeg" alt="Modern bar with darts setup" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Dublin Elite Championship</h3>
+                            <p class="league-venue">The Shelbourne</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Dublin City Centre</span>
+                                <span class="info-item">📅 Next Match: Nov 12, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="dublin-elite">View League</button>
+                        </div>
+                    </article>
+                    <!-- Duplicate first 3 items for seamless infinite loop -->
+                    <article class="card league-card" data-league="dublin-city">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-1.jpg" alt="Traditional pub with darts board" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Dublin City Darts League</h3>
+                            <p class="league-venue">The Long Hall Pub</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Dublin City Centre</span>
+                                <span class="info-item">📅 Next Match: Nov 5, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="dublin-city">View League</button>
+                        </div>
+                    </article>
+                    <article class="card league-card" data-league="southside-arrows">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-2.jpeg" alt="Modern bar with darts setup" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Southside Arrows League</h3>
+                            <p class="league-venue">O'Brien's Bar</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 South Dublin</span>
+                                <span class="info-item">📅 Next Match: Nov 7, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="southside-arrows">View League</button>
+                        </div>
+                    </article>
+                    <article class="card league-card" data-league="northside-premier">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-3.jpeg" alt="Professional darts tournament" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Northside Premier Division</h3>
+                            <p class="league-venue">The Black Swan</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 North Dublin</span>
+                                <span class="info-item">📅 Next Match: Nov 8, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="northside-premier">View League</button>
+                        </div>
+                    </article>
+                </div>
+                    </div>
+                </div>
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev-btn" aria-label="Previous Dublin leagues">❮</button>
+                    <button class="carousel-btn next-btn" aria-label="Next Dublin leagues">❯</button>
                 </div>
             </div>
         </section>
@@ -168,8 +212,10 @@
         <section id="galway-leagues" class="leagues-by-area">
             <div class="container">
                 <h2>Galway</h2>
-                <div class="grid league-grid">
-                    <article class="card league-card" data-league="Galway Bay Darts League">
+                <div class="carousel-wrapper">
+                    <div class="carousel-viewport">
+                        <div class="carousel-container league-grid" id="galway-carousel">
+                    <article class="card league-card" data-league="galway-bay">
                         <div class="league-card-image">
                             <img src="/img/pub-dart-1.jpg" alt="Traditional pub with darts board" loading="lazy">
                         </div>
@@ -180,29 +226,10 @@
                                 <span class="info-item">📍 Galway City</span>
                                 <span class="info-item">📅 Next Match: Nov 6, 2025</span>
                             </div>
-                            <a href="/leagues/galway-bay" class="btn btn-secondary">View League</a>
-                        </div>
-                        <div class="reviews-section" data-league-reviews="Galway Bay Darts League">
-                            <h4>Reviews</h4>
-                            <div class="reviews-list"></div>
-                            <div class="review-form-container" style="display: none;">
-                                <form class="review-form">
-                                    <div class="form-group">
-                                        <label>Rating (1-5)</label>
-                                        <input type="number" name="rating" min="1" max="5" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Comment</label>
-                                        <textarea name="comment" rows="3" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                                    <button type="button" class="btn btn-secondary cancel-review">Cancel</button>
-                                </form>
-                            </div>
-                            <button class="btn btn-secondary add-review-btn" style="display: none;">Add Review</button>
+                            <button type="button" class="btn btn-secondary view-league" data-league="galway-bay">View League</button>
                         </div>
                     </article>
-                    <article class="card league-card" data-league="Connemara Darts Championship">
+                    <article class="card league-card" data-league="connemara-championship">
                         <div class="league-card-image">
                             <img src="/img/pub-dart-2.jpeg" alt="Modern bar with darts setup" loading="lazy">
                         </div>
@@ -213,29 +240,10 @@
                                 <span class="info-item">📍 Connemara</span>
                                 <span class="info-item">📅 Next Match: Nov 9, 2025</span>
                             </div>
-                            <a href="/leagues/connemara-championship" class="btn btn-secondary">View League</a>
-                        </div>
-                        <div class="reviews-section" data-league-reviews="Connemara Darts Championship">
-                            <h4>Reviews</h4>
-                            <div class="reviews-list"></div>
-                            <div class="review-form-container" style="display: none;">
-                                <form class="review-form">
-                                    <div class="form-group">
-                                        <label>Rating (1-5)</label>
-                                        <input type="number" name="rating" min="1" max="5" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Comment</label>
-                                        <textarea name="comment" rows="3" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                                    <button type="button" class="btn btn-secondary cancel-review">Cancel</button>
-                                </form>
-                            </div>
-                            <button class="btn btn-secondary add-review-btn" style="display: none;">Add Review</button>
+                            <button type="button" class="btn btn-secondary view-league" data-league="connemara-championship">View League</button>
                         </div>
                     </article>
-                    <article class="card league-card" data-league="West Galway Arrows">
+                    <article class="card league-card" data-league="west-galway-arrows">
                         <div class="league-card-image">
                             <img src="/img/pub-dart-3.jpeg" alt="Professional darts tournament" loading="lazy">
                         </div>
@@ -246,28 +254,86 @@
                                 <span class="info-item">📍 Galway City</span>
                                 <span class="info-item">📅 Next Match: Nov 11, 2025</span>
                             </div>
-                            <a href="/leagues/west-galway-arrows" class="btn btn-secondary">View League</a>
-                        </div>
-                        <div class="reviews-section" data-league-reviews="West Galway Arrows">
-                            <h4>Reviews</h4>
-                            <div class="reviews-list"></div>
-                            <div class="review-form-container" style="display: none;">
-                                <form class="review-form">
-                                    <div class="form-group">
-                                        <label>Rating (1-5)</label>
-                                        <input type="number" name="rating" min="1" max="5" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Comment</label>
-                                        <textarea name="comment" rows="3" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                                    <button type="button" class="btn btn-secondary cancel-review">Cancel</button>
-                                </form>
-                            </div>
-                            <button class="btn btn-secondary add-review-btn" style="display: none;">Add Review</button>
+                            <button type="button" class="btn btn-secondary view-league" data-league="west-galway-arrows">View League</button>
                         </div>
                     </article>
+                    <article class="card league-card" data-league="galway-east">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-1.jpg" alt="Traditional pub with darts board" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>East Galway Darts League</h3>
+                            <p class="league-venue">The Portumna Inn</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 East Galway</span>
+                                <span class="info-item">📅 Next Match: Nov 10, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="galway-east">View League</button>
+                        </div>
+                    </article>
+                    <article class="card league-card" data-league="galway-pro">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-2.jpeg" alt="Modern bar with darts setup" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Galway Pro Division</h3>
+                            <p class="league-venue">Taaffe's Bar</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Galway City Centre</span>
+                                <span class="info-item">📅 Next Match: Nov 13, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="galway-pro">View League</button>
+                        </div>
+                    </article>
+                    <!-- Duplicate first 3 items for seamless infinite loop -->
+                    <article class="card league-card" data-league="galway-bay">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-1.jpg" alt="Traditional pub with darts board" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Galway Bay Darts League</h3>
+                            <p class="league-venue">The Skeffington Arms</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Galway City</span>
+                                <span class="info-item">📅 Next Match: Nov 6, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="galway-bay">View League</button>
+                        </div>
+                    </article>
+                    <article class="card league-card" data-league="connemara-championship">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-2.jpeg" alt="Modern bar with darts setup" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Connemara Darts Championship</h3>
+                            <p class="league-venue">Connemara Inn</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Connemara</span>
+                                <span class="info-item">📅 Next Match: Nov 9, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="connemara-championship">View League</button>
+                        </div>
+                    </article>
+                    <article class="card league-card" data-league="west-galway-arrows">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-3.jpeg" alt="Professional darts tournament" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>West Galway Arrows</h3>
+                            <p class="league-venue">The King's Head</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Galway City</span>
+                                <span class="info-item">📅 Next Match: Nov 11, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="west-galway-arrows">View League</button>
+                        </div>
+                    </article>
+                </div>
+                    </div>
+                </div>
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev-btn" aria-label="Previous Galway leagues">❮</button>
+                    <button class="carousel-btn next-btn" aria-label="Next Galway leagues">❯</button>
                 </div>
             </div>
         </section>
@@ -276,8 +342,10 @@
         <section id="cork-leagues" class="leagues-by-area">
             <div class="container">
                 <h2>Cork</h2>
-                <div class="grid league-grid">
-                    <article class="card league-card" data-league="Rebel County Darts League">
+                <div class="carousel-wrapper">
+                    <div class="carousel-viewport">
+                        <div class="carousel-container league-grid" id="cork-carousel">
+                    <article class="card league-card" data-league="rebel-county">
                         <div class="league-card-image">
                             <img src="/img/pub-dart-1.jpg" alt="Traditional pub with darts board" loading="lazy">
                         </div>
@@ -288,29 +356,10 @@
                                 <span class="info-item">📍 Cork City</span>
                                 <span class="info-item">📅 Next Match: Nov 5, 2025</span>
                             </div>
-                            <a href="/leagues/rebel-county" class="btn btn-secondary">View League</a>
-                        </div>
-                        <div class="reviews-section" data-league-reviews="Rebel County Darts League">
-                            <h4>Reviews</h4>
-                            <div class="reviews-list"></div>
-                            <div class="review-form-container" style="display: none;">
-                                <form class="review-form">
-                                    <div class="form-group">
-                                        <label>Rating (1-5)</label>
-                                        <input type="number" name="rating" min="1" max="5" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Comment</label>
-                                        <textarea name="comment" rows="3" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                                    <button type="button" class="btn btn-secondary cancel-review">Cancel</button>
-                                </form>
-                            </div>
-                            <button class="btn btn-secondary add-review-btn" style="display: none;">Add Review</button>
+                            <button type="button" class="btn btn-secondary view-league" data-league="rebel-county">View League</button>
                         </div>
                     </article>
-                    <article class="card league-card" data-league="Cork Harbour Arrows">
+                    <article class="card league-card" data-league="cork-harbour-arrows">
                         <div class="league-card-image">
                             <img src="/img/pub-dart-2.jpeg" alt="Modern bar with darts setup" loading="lazy">
                         </div>
@@ -321,29 +370,10 @@
                                 <span class="info-item">📍 Cork City Centre</span>
                                 <span class="info-item">📅 Next Match: Nov 7, 2025</span>
                             </div>
-                            <a href="/leagues/cork-harbour-arrows" class="btn btn-secondary">View League</a>
-                        </div>
-                        <div class="reviews-section" data-league-reviews="Cork Harbour Arrows">
-                            <h4>Reviews</h4>
-                            <div class="reviews-list"></div>
-                            <div class="review-form-container" style="display: none;">
-                                <form class="review-form">
-                                    <div class="form-group">
-                                        <label>Rating (1-5)</label>
-                                        <input type="number" name="rating" min="1" max="5" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Comment</label>
-                                        <textarea name="comment" rows="3" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                                    <button type="button" class="btn btn-secondary cancel-review">Cancel</button>
-                                </form>
-                            </div>
-                            <button class="btn btn-secondary add-review-btn" style="display: none;">Add Review</button>
+                            <button type="button" class="btn btn-secondary view-league" data-league="cork-harbour-arrows">View League</button>
                         </div>
                     </article>
-                    <article class="card league-card" data-league="East Cork Premier League">
+                    <article class="card league-card" data-league="east-cork-premier">
                         <div class="league-card-image">
                             <img src="/img/pub-dart-3.jpeg" alt="Professional darts tournament" loading="lazy">
                         </div>
@@ -354,28 +384,86 @@
                                 <span class="info-item">📍 East Cork</span>
                                 <span class="info-item">📅 Next Match: Nov 10, 2025</span>
                             </div>
-                            <a href="/leagues/east-cork-premier" class="btn btn-secondary">View League</a>
-                        </div>
-                        <div class="reviews-section" data-league-reviews="East Cork Premier League">
-                            <h4>Reviews</h4>
-                            <div class="reviews-list"></div>
-                            <div class="review-form-container" style="display: none;">
-                                <form class="review-form">
-                                    <div class="form-group">
-                                        <label>Rating (1-5)</label>
-                                        <input type="number" name="rating" min="1" max="5" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Comment</label>
-                                        <textarea name="comment" rows="3" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                                    <button type="button" class="btn btn-secondary cancel-review">Cancel</button>
-                                </form>
-                            </div>
-                            <button class="btn btn-secondary add-review-btn" style="display: none;">Add Review</button>
+                            <button type="button" class="btn btn-secondary view-league" data-league="east-cork-premier">View League</button>
                         </div>
                     </article>
+                    <article class="card league-card" data-league="cork-midleton">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-1.jpg" alt="Traditional pub with darts board" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Midleton Darts Championship</h3>
+                            <p class="league-venue">The Jameson Inn</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Midleton</span>
+                                <span class="info-item">📅 Next Match: Nov 11, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="cork-midleton">View League</button>
+                        </div>
+                    </article>
+                    <article class="card league-card" data-league="cork-elite">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-2.jpeg" alt="Modern bar with darts setup" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Cork Elite Masters</h3>
+                            <p class="league-venue">The Thirsty Scholar</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Cork City</span>
+                                <span class="info-item">📅 Next Match: Nov 14, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="cork-elite">View League</button>
+                        </div>
+                    </article>
+                    <!-- Duplicate first 3 items for seamless infinite loop -->
+                    <article class="card league-card" data-league="rebel-county">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-1.jpg" alt="Traditional pub with darts board" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Rebel County Darts League</h3>
+                            <p class="league-venue">The Hi-B Bar</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Cork City</span>
+                                <span class="info-item">📅 Next Match: Nov 5, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="rebel-county">View League</button>
+                        </div>
+                    </article>
+                    <article class="card league-card" data-league="cork-harbour-arrows">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-2.jpeg" alt="Modern bar with darts setup" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Cork Harbour Arrows</h3>
+                            <p class="league-venue">The Oliver Plunkett</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Cork City Centre</span>
+                                <span class="info-item">📅 Next Match: Nov 7, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="cork-harbour-arrows">View League</button>
+                        </div>
+                    </article>
+                    <article class="card league-card" data-league="east-cork-premier">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-3.jpeg" alt="Professional darts tournament" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>East Cork Premier League</h3>
+                            <p class="league-venue">The Anchor Bar</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 East Cork</span>
+                                <span class="info-item">📅 Next Match: Nov 10, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="east-cork-premier">View League</button>
+                        </div>
+                    </article>
+                </div>
+                    </div>
+                </div>
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev-btn" aria-label="Previous Cork leagues">❮</button>
+                    <button class="carousel-btn next-btn" aria-label="Next Cork leagues">❯</button>
                 </div>
             </div>
         </section>
@@ -384,8 +472,10 @@
         <section id="wexford-leagues" class="leagues-by-area">
             <div class="container">
                 <h2>Wexford</h2>
-                <div class="grid league-grid">
-                    <article class="card league-card" data-league="Wexford Town Darts League">
+                <div class="carousel-wrapper">
+                    <div class="carousel-viewport">
+                        <div class="carousel-container league-grid" id="wexford-carousel">
+                    <article class="card league-card" data-league="wexford-town">
                         <div class="league-card-image">
                             <img src="/img/pub-dart-1.jpg" alt="Traditional pub with darts board" loading="lazy">
                         </div>
@@ -396,29 +486,10 @@
                                 <span class="info-item">📍 Wexford Town</span>
                                 <span class="info-item">📅 Next Match: Nov 6, 2025</span>
                             </div>
-                            <a href="/leagues/wexford-town" class="btn btn-secondary">View League</a>
-                        </div>
-                        <div class="reviews-section" data-league-reviews="Wexford Town Darts League">
-                            <h4>Reviews</h4>
-                            <div class="reviews-list"></div>
-                            <div class="review-form-container" style="display: none;">
-                                <form class="review-form">
-                                    <div class="form-group">
-                                        <label>Rating (1-5)</label>
-                                        <input type="number" name="rating" min="1" max="5" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Comment</label>
-                                        <textarea name="comment" rows="3" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                                    <button type="button" class="btn btn-secondary cancel-review">Cancel</button>
-                                </form>
-                            </div>
-                            <button class="btn btn-secondary add-review-btn" style="display: none;">Add Review</button>
+                            <button type="button" class="btn btn-secondary view-league" data-league="wexford-town">View League</button>
                         </div>
                     </article>
-                    <article class="card league-card" data-league="Enniscorthy Darts Championship">
+                    <article class="card league-card" data-league="enniscorthy-championship">
                         <div class="league-card-image">
                             <img src="/img/pub-dart-2.jpeg" alt="Modern bar with darts setup" loading="lazy">
                         </div>
@@ -429,29 +500,10 @@
                                 <span class="info-item">📍 Enniscorthy</span>
                                 <span class="info-item">📅 Next Match: Nov 8, 2025</span>
                             </div>
-                            <a href="/leagues/enniscorthy-championship" class="btn btn-secondary">View League</a>
-                        </div>
-                        <div class="reviews-section" data-league-reviews="Enniscorthy Darts Championship">
-                            <h4>Reviews</h4>
-                            <div class="reviews-list"></div>
-                            <div class="review-form-container" style="display: none;">
-                                <form class="review-form">
-                                    <div class="form-group">
-                                        <label>Rating (1-5)</label>
-                                        <input type="number" name="rating" min="1" max="5" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Comment</label>
-                                        <textarea name="comment" rows="3" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                                    <button type="button" class="btn btn-secondary cancel-review">Cancel</button>
-                                </form>
-                            </div>
-                            <button class="btn btn-secondary add-review-btn" style="display: none;">Add Review</button>
+                            <button type="button" class="btn btn-secondary view-league" data-league="enniscorthy-championship">View League</button>
                         </div>
                     </article>
-                    <article class="card league-card" data-league="Rosslare Harbour League">
+                    <article class="card league-card" data-league="rosslare-harbour">
                         <div class="league-card-image">
                             <img src="/img/pub-dart-3.jpeg" alt="Professional darts tournament" loading="lazy">
                         </div>
@@ -462,28 +514,86 @@
                                 <span class="info-item">📍 Rosslare</span>
                                 <span class="info-item">📅 Next Match: Nov 12, 2025</span>
                             </div>
-                            <a href="/leagues/rosslare-harbour" class="btn btn-secondary">View League</a>
-                        </div>
-                        <div class="reviews-section" data-league-reviews="Rosslare Harbour League">
-                            <h4>Reviews</h4>
-                            <div class="reviews-list"></div>
-                            <div class="review-form-container" style="display: none;">
-                                <form class="review-form">
-                                    <div class="form-group">
-                                        <label>Rating (1-5)</label>
-                                        <input type="number" name="rating" min="1" max="5" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Comment</label>
-                                        <textarea name="comment" rows="3" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                                    <button type="button" class="btn btn-secondary cancel-review">Cancel</button>
-                                </form>
-                            </div>
-                            <button class="btn btn-secondary add-review-btn" style="display: none;">Add Review</button>
+                            <button type="button" class="btn btn-secondary view-league" data-league="rosslare-harbour">View League</button>
                         </div>
                     </article>
+                    <article class="card league-card" data-league="wexford-county">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-1.jpg" alt="Traditional pub with darts board" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Wexford County Darts</h3>
+                            <p class="league-venue">The Westgate Inn</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Wexford</span>
+                                <span class="info-item">📅 Next Match: Nov 9, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="wexford-county">View League</button>
+                        </div>
+                    </article>
+                    <article class="card league-card" data-league="wexford-pro">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-2.jpeg" alt="Modern bar with darts setup" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Wexford Pro Masters</h3>
+                            <p class="league-venue">Dunbrody House</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Wexford</span>
+                                <span class="info-item">📅 Next Match: Nov 15, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="wexford-pro">View League</button>
+                        </div>
+                    </article>
+                    <!-- Duplicate first 3 items for seamless infinite loop -->
+                    <article class="card league-card" data-league="wexford-town">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-1.jpg" alt="Traditional pub with darts board" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Wexford Town Darts League</h3>
+                            <p class="league-venue">The Sky & The Ground</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Wexford Town</span>
+                                <span class="info-item">📅 Next Match: Nov 6, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="wexford-town">View League</button>
+                        </div>
+                    </article>
+                    <article class="card league-card" data-league="enniscorthy-championship">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-2.jpeg" alt="Modern bar with darts setup" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Enniscorthy Darts Championship</h3>
+                            <p class="league-venue">The Riverside Inn</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Enniscorthy</span>
+                                <span class="info-item">📅 Next Match: Nov 8, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="enniscorthy-championship">View League</button>
+                        </div>
+                    </article>
+                    <article class="card league-card" data-league="rosslare-harbour">
+                        <div class="league-card-image">
+                            <img src="/img/pub-dart-3.jpeg" alt="Professional darts tournament" loading="lazy">
+                        </div>
+                        <div class="league-card-content">
+                            <h3>Rosslare Harbour League</h3>
+                            <p class="league-venue">The Strand Bar</p>
+                            <div class="league-info">
+                                <span class="info-item">📍 Rosslare</span>
+                                <span class="info-item">📅 Next Match: Nov 12, 2025</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary view-league" data-league="rosslare-harbour">View League</button>
+                        </div>
+                    </article>
+                </div>
+                    </div>
+                </div>
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev-btn" aria-label="Previous Wexford leagues">❮</button>
+                    <button class="carousel-btn next-btn" aria-label="Next Wexford leagues">❯</button>
                 </div>
             </div>
         </section>
@@ -502,7 +612,32 @@
     </footer>
 
     <script src="js/navigation.js"></script>
-    <script src="js/reviews.js"></script>
+    <script src="js/leagues.js" defer></script>
+    <script src="js/carousel.js" defer></script>        <!-- League details modal -->
+        <div id="league-modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="league-modal-title">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <header class="modal-header">
+                        <h2 id="league-modal-title">League Standings</h2>
+                        <button type="button" class="modal-close" aria-label="Close">×</button>
+                    </header>
+                    <div class="modal-body">
+                        <p id="league-venue" class="muted small"></p>
+                        <table id="league-standings" class="standings-table">
+                            <caption id="standings-caption">Current Standings</caption>
+                            <thead>
+                                <tr><th>Pos</th><th>Player/Team</th><th>P</th><th>W</th><th>L</th><th>Pts</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <footer class="modal-footer">
+                        <button type="button" id="enter-tournament" class="btn btn-primary">Enter Tournament</button>
+                        <button type="button" class="btn btn-secondary modal-close">Close</button>
+                    </footer>
+                </div>
+            </div>
+        </div>
 </body>
 </html>
 
