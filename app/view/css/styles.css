@@ -1054,6 +1054,17 @@ html {
     color: var(--text);
 }
 
+/* Highlight current user's row in standings */
+.standings-table tr.you { background-color: rgba(255, 243, 205, 0.6); font-weight: 600; }
+
+/* Profile current-league small card */
+.profile-league-card { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 12px; border-bottom:1px solid rgba(255,255,255,0.04); }
+.profile-league-card .meta { display:flex; gap:10px; align-items:center; }
+.profile-league-card .meta h4 { margin:0; font-size:1rem; }
+.profile-league-card .meta p { margin:0; color:var(--muted); font-size:0.9rem; }
+.profile-league-card .leave-btn { background-color: #b91c1c; color: white; border: none; padding:8px 12px; border-radius:6px; cursor:pointer; }
+.profile-league-card .leave-btn:hover { opacity:0.95; }
+
 .modal-footer {
     border-top: 1px solid var(--border);
     gap: 0.5rem;

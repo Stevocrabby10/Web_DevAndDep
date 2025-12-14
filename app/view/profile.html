@@ -1,216 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Your profile on Darts Hub - Manage your account and view your stats.">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Profile - Darts Hub</title>
     <link rel="stylesheet" href="css/styles.css">
     <style>
-        .auth-wrapper {
-            min-height: calc(100vh - 200px);
-            padding: var(--spacing-xl) 0;
-        }
+        .profile-summary-container { padding: 48px 0; min-height: calc(100vh - 200px); }
+        .profile-summary { max-width: 1100px; margin: 0 auto; display:flex; gap:24px; align-items:flex-start; }
+        @media (max-width:900px){ .profile-summary { flex-direction:column; } }
+        .pfp { width:160px; height:160px; border-radius:50%; overflow:hidden; border:3px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:center; font-size:3rem; }
+        .left { flex:0 0 220px; }
+        .center { flex:1; }
+        /* Profile-specific card style: soft blue to match site accent */
+        .card { background: linear-gradient(180deg, rgba(96,165,250,0.06), rgba(96,165,250,0.03)); padding:18px; border-radius:8px; border:1px solid rgba(96,165,250,0.14); color:var(--text); }
+        .card h2 { margin-top:0; }
+        .small-list { list-style:none;padding-left:0;margin:0; }
+        .small-list li { padding:6px 0; border-bottom:1px solid rgba(0,0,0,0.04); }
+        .settings-btn { margin-top:12px; }
+        /* Left card layout: align content to start so buttons sit under settings */
+        .left .card { display:flex; flex-direction:column; align-items:flex-start; }
 
-        .login-card {
-            max-width: 480px;
-            margin: 0 auto var(--spacing-lg);
-        }
-
-        .login-card h1 {
-            text-align: center;
-            margin-bottom: var(--spacing-md);
-        }
-
-        .form-message {
-            margin-top: var(--spacing-sm);
-            text-align: center;
-            color: var(--muted);
-        }
-
-        .form-message.error {
-            color: #f87171;
-        }
-
-        .profile-container {
-            min-height: calc(100vh - 200px);
-            padding: var(--spacing-xl) 0;
-        }
-        
-        .profile-card {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .profile-header {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-lg);
-            align-items: center;
-        }
-        
-        @media (min-width: 768px) {
-            .profile-header {
-                flex-direction: row;
-                align-items: flex-start;
-            }
-        }
-        
-        .profile-picture {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--border);
-            background-color: var(--bg);
-            flex-shrink: 0;
-        }
-        
-        @media (max-width: 767px) {
-            .profile-picture {
-                width: 120px;
-                height: 120px;
-                border-width: 4px;
-            }
-        }
-        
-        .profile-info {
-            flex: 1;
-            width: 100%;
-        }
-        
-        .profile-name {
-            font-size: 2rem;
-            margin-bottom: var(--spacing-sm);
-            color: var(--text);
-        }
-
-        .profile-address {
-            font-size: 1rem;
-            color: var(--muted);
-            margin: 0;
-        }
-        
-        @media (max-width: 767px) {
-            .profile-name {
-                font-size: 1.5rem;
-                text-align: center;
-            }
-        }
-        
-        .profile-actions {
-            margin-top: var(--spacing-lg);
-            padding-top: var(--spacing-lg);
-            border-top: 2px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-lg);
-        }
-
-        .action-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--spacing-sm);
-        }
-
-        .logout-button {
-            background-color: transparent;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-        }
-
-        .logout-button:hover,
-        .logout-button:focus {
-            background-color: rgba(96, 165, 250, 0.1);
-        }
-        
-        .delete-account-button {
-            background-color: #ef4444;
-            color: white;
-            border: none;
-            padding: var(--spacing-sm) var(--spacing-md);
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            width: 100%;
-        }
-        
-        @media (min-width: 768px) {
-        .delete-account-button {
-                width: auto;
-            }
-        }
-        
-        .delete-account-button:hover,
-        .delete-account-button:focus {
-            background-color: #dc2626;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
-        }
-        
-        .profile-placeholder {
-        .edit-profile-form {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-md);
-        }
-
-        .edit-profile-form .form-row {
-            display: flex;
-            gap: var(--spacing-md);
-            flex-wrap: wrap;
-        }
-
-        .edit-profile-form .form-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .form-status {
-            font-size: 0.95rem;
-            color: var(--muted);
-            min-height: 1.25rem;
-        }
-
-        .form-status.error {
-            color: #f87171;
-        }
-
-        .form-status.success {
-            color: #34d399;
-        }
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background-color: var(--bg);
-            border: 3px solid var(--border);
-            color: var(--muted);
-            font-size: 3rem;
-            flex-shrink: 0;
-        }
-        
-        @media (max-width: 767px) {
-            .profile-placeholder {
-                width: 120px;
-                height: 120px;
-                font-size: 2.5rem;
-                border-width: 4px;
-            }
-        }
+        /* Buttons inside profile cards: use brown primary color like register and consistent sizing */
+        .card .btn { background-color: var(--primary); color: var(--bg); border: none; padding: 10px 14px; border-radius:6px; text-decoration:none; display:inline-block; min-width:150px; }
+        .card .btn:hover { opacity:0.95; }
+        /* Make settings/logout on the left card full-width to match sizes */
+        .left .card .btn { width:100%; box-sizing:border-box; }
     </style>
 </head>
 <body>
     <header>
         <div class="container header-content">
             <a href="/" class="logo">🎯 Darts Hub</a>
-            <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
-                <span class="sr-only">Toggle menu</span>
-                ☰
-            </button>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">☰</button>
             <div class="nav-backdrop" id="nav-backdrop" data-visible="false"></div>
             <nav id="primary-nav" class="primary-nav" aria-label="Main navigation">
                 <ul class="nav-list">
@@ -223,77 +45,73 @@
             </nav>
         </div>
     </header>
-    
-    <main id="main">
-        <div class="auth-wrapper">
-            <div class="container">
-                <div class="card login-card" id="loginSection" hidden>
-                    <h1>Log In</h1>
-                    <p class="form-message" id="loginInstructions">Please log in to view your profile.</p>
-                    <form id="loginForm">
-                        <div class="form-group">
-                            <label for="loginUsername">Username</label>
-                            <input type="text" id="loginUsername" name="loginUsername" required autocomplete="username">
-                        </div>
-                        <div class="form-group">
-                            <label for="loginPassword">Password</label>
-                            <input type="password" id="loginPassword" name="loginPassword" required autocomplete="current-password">
-                        </div>
-                        <button type="submit" class="btn btn-primary" id="loginButton">Log In</button>
-                        <p class="form-message" id="loginMessage" role="status"></p>
-                    </form>
-                </div>
 
-                <div class="profile-card card" id="profileSection" hidden>
-                    <div class="profile-header">
-                        <div class="profile-placeholder" aria-label="Profile picture">
-                            👤
-                        </div>
-                        <div class="profile-info">
-                            <h1 class="profile-name" id="userName">User Name</h1>
-                            <p class="profile-address" id="userAddress">No address on file</p>
+    <main id="main">
+        <div class="container profile-summary-container">
+            <!-- Login view (shown if not authenticated) -->
+            <div class="card" id="loginSection" style="max-width:480px;margin:0 auto;" hidden>
+                <h1>Log In</h1>
+                <p class="form-message">Please log in to view your profile.</p>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginUsername">Username</label>
+                        <input type="text" id="loginUsername" name="loginUsername" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="loginPassword" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="loginButton">Log In</button>
+                    <p class="form-message" id="loginMessage" role="status"></p>
+                </form>
+            </div>
+
+            <!-- Profile summary (shown after login) -->
+            <div id="profileSection" hidden>
+                <div class="profile-summary">
+                    <div class="left">
+                        <div class="card" id="leftCard">
+                            <div id="pfp" class="pfp">👤</div>
+                            <div style="margin-top:12px">
+                                <h2 id="userName">User Name</h2>
+                                <p id="userAddress" style="color:var(--muted);margin:4px 0 0;">No address on file</p>
+                            </div>
+                            <div style="margin-top:10px;">
+                                <a href="/profile-edit.html" class="btn settings-btn">Settings</a>
+                                <div style="margin-top:8px;">
+                                    <button id="logoutSummaryBtn" class="btn logout-button">Log Out</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="profile-actions">
-                        <div class="action-buttons">
-                            <button type="button" class="btn logout-button" id="logoutBtn">Log Out</button>
-                            <button type="button" class="delete-account-button" id="deleteAccountBtn">
-                                Delete Account
-                            </button>
+
+                    <div class="center">
+                        <div class="card">
+                                <h2>Current Leagues</h2>
+                                <div id="currentLeaguesCards">
+                                    <p class="muted">No current leagues found.</p>
+                                </div>
                         </div>
-                        <div class="edit-profile">
-                            <h2>Edit Profile</h2>
-                            <form id="editProfileForm" class="edit-profile-form">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="editUsername">Username</label>
-                                        <input type="text" id="editUsername" name="editUsername" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAddress">Address</label>
-                                        <input type="text" id="editAddress" name="editAddress" placeholder="Enter address">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="editTeam">Team</label>
-                                        <input type="text" id="editTeam" name="editTeam" placeholder="Enter your team name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editLeagues">Leagues</label>
-                                        <input type="text" id="editLeagues" name="editLeagues" placeholder="Enter leagues (comma separated)">
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary" id="saveProfileBtn">Save Changes</button>
-                                <p class="form-status" id="editProfileStatus" role="status"></p>
-                            </form>
+
+                        <div class="card" style="margin-top:12px;">
+                            <h2>Next Matches</h2>
+                            <ul id="nextMatches" class="small-list">
+                                <li>No upcoming matches.</li>
+                            </ul>
+                        </div>
+
+                        <div class="card" style="margin-top:12px;">
+                            <h2>Previous Leagues</h2>
+                            <ul id="previousLeagues" class="small-list">
+                                <li>No previous leagues on record.</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-    
+
     <footer>
         <div class="container footer-content">
             <div class="footer-links">
@@ -310,225 +128,340 @@
     <script>
         const loginSection = document.getElementById('loginSection');
         const profileSection = document.getElementById('profileSection');
-        const loginMessage = document.getElementById('loginMessage');
-        const loginButton = document.getElementById('loginButton');
         const loginForm = document.getElementById('loginForm');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const editProfileForm = document.getElementById('editProfileForm');
-        const editUsernameInput = document.getElementById('editUsername');
-        const editAddressInput = document.getElementById('editAddress');
-        const editProfileStatus = document.getElementById('editProfileStatus');
-        const saveProfileBtn = document.getElementById('saveProfileBtn');
+        const loginMessage = document.getElementById('loginMessage');
 
-        function showLogin() {
-            loginSection.removeAttribute('hidden');
-            profileSection.setAttribute('hidden', '');
-            loginMessage.textContent = '';
-            loginMessage.classList.remove('error');
+        function safeText(s){ return s ? String(s) : ''; }
+
+        // Escape HTML for safe insertion into innerHTML
+        function escapeHtml(str){
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
         }
 
-        function showProfile() {
+        function showLogin(){
+            loginSection.removeAttribute('hidden');
+            profileSection.setAttribute('hidden', '');
+        }
+
+        function showProfile(){
             profileSection.removeAttribute('hidden');
             loginSection.setAttribute('hidden', '');
         }
 
-        // Load user data from session
-        function loadUserData(showLoginOnFail = true) {
-            fetch('/current-user')
-                .then(response => {
-                    if (response.status === 401) {
-                        if (showLoginOnFail) {
-                            showLogin();
+        function populateUser(user){
+            if(!user) return;
+            document.getElementById('userName').textContent = safeText(user.username || user.name || 'User');
+            document.getElementById('userAddress').textContent = safeText(user.address || 'No address on file');
+            const pfpEl = document.getElementById('pfp');
+            if(user.pfp || user.avatarUrl){
+                const img = document.createElement('img');
+                img.src = user.pfp || user.avatarUrl;
+                img.alt = 'Profile picture';
+                img.style.width = '100%'; img.style.height = '100%'; img.style.objectFit = 'cover';
+                pfpEl.innerHTML = '';
+                pfpEl.appendChild(img);
+            }
+        }
+
+        function tryLoad(path, listId, emptyText){
+            fetch(path, { credentials: 'same-origin' })
+                .then(res => {
+                    if(!res.ok) throw new Error('No data');
+                    return res.json();
+                })
+                .then(arr => {
+                    const ul = document.getElementById(listId);
+                    ul.innerHTML = '';
+                    if(!Array.isArray(arr) || arr.length === 0){
+                        ul.innerHTML = `<li>${emptyText}</li>`;
+                        return;
+                    }
+                    arr.forEach(item => {
+                        const li = document.createElement('li');
+                        // Next matches format
+                        if (item.date && item.league) {
+                            const d = (new Date(item.date)).toLocaleDateString();
+                            li.textContent = `${d} — ${item.league}` + (item.venue ? ` @ ${item.venue}` : '');
                         }
-                        return null;
-                    }
-                    return response.json();
+                        // Current / previous leagues format
+                        else if (item.name) {
+                            li.textContent = item.name + (item.venue ? ` — ${item.venue}` : '');
+                        }
+                        else {
+                            li.textContent = String(item);
+                        }
+                        ul.appendChild(li);
+                    });
                 })
-                .then(data => {
-                    if (!data) return;
-                    const username = data.username || 'User';
-                    const address = data.address || 'No address on file';
-                    document.getElementById('userName').textContent = username;
-                    document.getElementById('userAddress').textContent = address;
-                    editUsernameInput.value = data.username || '';
-                    editAddressInput.value = data.address || '';
-                    showProfile();
-                })
-                .catch(error => {
-                    console.error('Error loading user data:', error);
-                    if (showLoginOnFail) {
-                        showLogin();
-                        loginMessage.textContent = 'Unable to load profile. Please log in again.';
-                        loginMessage.classList.add('error');
-                    }
+                .catch(()=>{
+                    // leave defaults
                 });
         }
 
-        // Login form handling
-        loginForm.addEventListener('submit', function (e) {
+        // Try to load current user and decide whether to show login or profile
+        function loadUserAndLists(){
+            fetch('/current-user', { credentials: 'same-origin' })
+                .then(res => {
+                    if (res.status === 401) {
+                        showLogin();
+                        throw new Error('Not logged in');
+                    }
+                    return res.json();
+                })
+                .then(user => {
+                    populateUser(user);
+                    window.currentUsername = user && user.username ? user.username : '';
+                    // load lists
+                    loadCurrentLeagues();
+                    tryLoad('/user/next-matches', 'nextMatches', 'No upcoming matches.');
+                    tryLoad('/user/previous-leagues', 'previousLeagues', 'No previous leagues on record.');
+                    showProfile();
+                })
+                .catch(err => {
+                    console.log('Profile load:', err && err.message);
+                });
+        }
+
+        // Login handling
+        loginForm.addEventListener('submit', function(e){
             e.preventDefault();
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value;
-
-            if (!username || !password) {
+            if(!username || !password){
                 loginMessage.textContent = 'Please fill in both fields.';
                 loginMessage.classList.add('error');
                 return;
             }
-
-            loginButton.disabled = true;
-            loginButton.textContent = 'Logging in...';
-            loginMessage.textContent = '';
-            loginMessage.classList.remove('error');
+            const btn = document.getElementById('loginButton');
+            btn.disabled = true; btn.textContent = 'Logging in...'; loginMessage.textContent = '';
 
             fetch('/login', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username,
-                    password,
-                }),
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
             })
-                .then(async (response) => {
-                    const data = await response.json();
-                    if (!response.ok) {
-                        throw new Error(data.msg || 'Login failed');
-                    }
-                    loginMessage.textContent = data.msg || 'Login successful!';
-                    loginMessage.classList.remove('error');
-                    loginButton.disabled = false;
-                    loginButton.textContent = 'Log In';
-                    loadUserData(false);
-                })
-                .catch((error) => {
-                    loginMessage.textContent = error.message || 'Invalid username or password.';
-                    loginMessage.classList.add('error');
-                    loginButton.disabled = false;
-                    loginButton.textContent = 'Log In';
-                });
+            .then(async res => {
+                const data = await res.json();
+                if(!res.ok) throw new Error(data.msg || 'Login failed');
+                // success — reload profile data
+                loadUserAndLists();
+            })
+            .catch(err => {
+                loginMessage.textContent = err.message || 'Login failed';
+                loginMessage.classList.add('error');
+            })
+            .finally(()=>{ btn.disabled = false; btn.textContent = 'Log In'; });
         });
 
-        // Logout functionality
-        logoutBtn.addEventListener('click', function () {
-            logoutBtn.disabled = true;
-            logoutBtn.textContent = 'Logging out...';
-
-            fetch('/logout')
-                .then(response => response.json())
-                .then(data => {
-                    const message = data.msg || 'You have been logged out.';
-                    loginMessage.textContent = message;
-                    loginMessage.classList.remove('error');
-                    loginForm.reset();
-                    loginButton.disabled = false;
-                    loginButton.textContent = 'Log In';
-                    showLogin();
-                })
-                .catch(error => {
-                    console.error('Logout error:', error);
-                    loginMessage.textContent = 'Could not log out. Please try again.';
-                    loginMessage.classList.add('error');
-                })
-                .finally(() => {
-                    logoutBtn.disabled = false;
-                    logoutBtn.textContent = 'Log Out';
-                });
-        });
-
-        // Edit profile functionality
-        editProfileForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const newUsername = editUsernameInput.value.trim();
-            const address = editAddressInput.value.trim();
-
-            if (!newUsername) {
-                editProfileStatus.textContent = 'Username cannot be empty.';
-                editProfileStatus.classList.add('error');
-                editProfileStatus.classList.remove('success');
-                return;
-            }
-
-            saveProfileBtn.disabled = true;
-            saveProfileBtn.textContent = 'Saving...';
-            editProfileStatus.textContent = '';
-            editProfileStatus.classList.remove('error', 'success');
-
-            fetch('/profile', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: newUsername,
-                    address,
-                }),
-            })
-                .then(async (response) => {
-                    const data = await response.json();
-                    if (!response.ok) {
-                        throw new Error(data.msg || 'Unable to update profile.');
-                    }
-                    editProfileStatus.textContent = data.msg || 'Profile updated.';
-                    editProfileStatus.classList.add('success');
-                    editProfileStatus.classList.remove('error');
-                    loadUserData(false);
-                })
-                .catch((error) => {
-                    editProfileStatus.textContent = error.message || 'Update failed.';
-                    editProfileStatus.classList.add('error');
-                    editProfileStatus.classList.remove('success');
-                })
-                .finally(() => {
-                    saveProfileBtn.disabled = false;
-                    saveProfileBtn.textContent = 'Save Changes';
-                });
-        });
-        
-        // Delete account functionality
-        document.getElementById('deleteAccountBtn').addEventListener('click', function() {
-            if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-                return;
-            }
-            
-            // Double confirmation
-            if (!confirm('This will permanently delete your account. Are you absolutely sure?')) {
-                return;
-            }
-            
-            const deleteButton = this;
-            deleteButton.disabled = true;
-            deleteButton.textContent = 'Deleting...';
-            
-            fetch('/delete-account', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.msg) {
-                    alert(data.msg);
-                    // Redirect to home page after account deletion
-                    window.location.href = '/';
-                } else {
-                    alert('Error deleting account. Please try again.');
-                    deleteButton.disabled = false;
-                    deleteButton.textContent = 'Delete Account';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-                deleteButton.disabled = false;
-                deleteButton.textContent = 'Delete Account';
+        // Logout button in profile summary
+        const logoutSummaryBtn = document.getElementById('logoutSummaryBtn');
+        if (logoutSummaryBtn) {
+            logoutSummaryBtn.addEventListener('click', function () {
+                logoutSummaryBtn.disabled = true;
+                logoutSummaryBtn.textContent = 'Logging out...';
+                fetch('/logout', { credentials: 'same-origin' })
+                    .then(res => res.json())
+                    .then(data => {
+                        loginMessage.textContent = data.msg || 'You have been logged out.';
+                        loginMessage.classList.remove('error');
+                        showLogin();
+                    })
+                    .catch(err => {
+                        console.error('Logout failed', err);
+                        loginMessage.textContent = 'Could not log out. Please try again.';
+                        loginMessage.classList.add('error');
+                    })
+                    .finally(() => {
+                        logoutSummaryBtn.disabled = false;
+                        logoutSummaryBtn.textContent = 'Log Out';
+                    });
             });
-        });
+        }
+
+        loadUserAndLists();
         
-        // Load user data on page load
-        loadUserData();
+        // Load current leagues and render as horizontal small cards with leave button
+        function loadCurrentLeagues(){
+            fetch('/user/leagues', { credentials: 'same-origin' })
+                .then(res => {
+                    if (!res.ok) throw new Error('No data');
+                    return res.json();
+                })
+                .then(arr => {
+                    const container = document.getElementById('currentLeaguesCards');
+                    container.innerHTML = '';
+                    if(!Array.isArray(arr) || arr.length === 0){
+                        container.innerHTML = '<p class="muted">No current leagues found.</p>';
+                        return;
+                    }
+                    arr.forEach(item => {
+                        const card = document.createElement('div');
+                        card.className = 'profile-league-card';
+                        const meta = document.createElement('div');
+                        meta.className = 'meta';
+                        const title = document.createElement('h4');
+                        title.textContent = item.name || 'League';
+                        const venue = document.createElement('p');
+                        venue.textContent = item.venue ? item.venue : (item.location || '');
+                        meta.appendChild(title);
+                        meta.appendChild(venue);
+
+                        const right = document.createElement('div');
+                        // View table button (navigates to leagues page and opens modal)
+                        const viewLink = document.createElement('a');
+                        viewLink.className = 'btn btn-secondary';
+                        viewLink.textContent = 'View Table';
+                        viewLink.href = '/leagues?league=' + encodeURIComponent(item.slug || item.id || '');
+                        viewLink.style.marginRight = '8px';
+
+                        const leaveBtn = document.createElement('button');
+                        leaveBtn.className = 'leave-btn';
+                        leaveBtn.textContent = 'Leave';
+                        leaveBtn.dataset.slug = item.slug || item.id || '';
+                        leaveBtn.addEventListener('click', function(){
+                            if(!confirm('Leave ' + (item.name || 'this league') + '?')) return;
+                            leaveBtn.disabled = true;
+                            fetch('/user/leave-league', {
+                                method: 'POST',
+                                credentials: 'same-origin',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ slug: leaveBtn.dataset.slug })
+                            })
+                            .then(res => res.json().catch(()=>({})))
+                            .then(data => {
+                                if (data && (data.deleted && data.deleted > 0 || data.msg === 'Not a member')){
+                                    // remove card
+                                    card.remove();
+                                    // refresh nextMatches and previousLeagues to reflect change
+                                    tryLoad('/user/next-matches', 'nextMatches', 'No upcoming matches.');
+                                    tryLoad('/user/previous-leagues', 'previousLeagues', 'No previous leagues on record.');
+                                } else {
+                                    alert(data.msg || 'Could not leave league');
+                                    leaveBtn.disabled = false;
+                                }
+                            })
+                            .catch(err => { console.error(err); alert('Error leaving league'); leaveBtn.disabled = false; });
+                        });
+                        right.appendChild(viewLink);
+                        right.appendChild(leaveBtn);
+
+                        card.appendChild(meta);
+                        card.appendChild(right);
+                        container.appendChild(card);
+                    });
+                })
+                .catch(()=>{
+                    // leave defaults
+                });
+        }
+
+            // Compact league modal (only the league content, not entire leagues page)
+            const leagueMiniHtml = `
+            <div id="league-mini-modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" style="display:none;">
+                <div class="modal-dialog" style="max-width:760px; width:100%;">
+                    <div class="modal-content">
+                        <header class="modal-header">
+                            <h2 id="league-mini-title">League</h2>
+                            <button type="button" id="league-mini-close" class="modal-close" aria-label="Close">×</button>
+                        </header>
+                        <div class="modal-body" style="padding:16px;">
+                            <p id="league-mini-venue" style="margin:0 0 12px;color:var(--muted);"></p>
+                            <div id="league-mini-standings" style="overflow:auto; max-height:360px;">
+                                <!-- standings table will be injected here -->
+                            </div>
+                        </div>
+                        <footer class="modal-footer">
+                            <button type="button" id="league-mini-close-2" class="btn btn-secondary">Close</button>
+                        </footer>
+                    </div>
+                </div>
+            </div>`;
+
+            // append compact modal to document
+            document.body.insertAdjacentHTML('beforeend', leagueMiniHtml);
+            const leagueMiniModal = document.getElementById('league-mini-modal');
+            const leagueMiniTitle = document.getElementById('league-mini-title');
+            const leagueMiniVenue = document.getElementById('league-mini-venue');
+            const leagueMiniStandings = document.getElementById('league-mini-standings');
+            const leagueMiniEnter = document.getElementById('league-mini-enter');
+            const leagueMiniClose = document.getElementById('league-mini-close');
+            const leagueMiniClose2 = document.getElementById('league-mini-close-2');
+
+            // open the mini-modal and populate with league card info (title/venue)
+            async function openIframeModal(slug, title){
+                if(!leagueMiniModal) return;
+                leagueMiniTitle.textContent = title || 'League';
+                leagueMiniVenue.textContent = '';
+                leagueMiniStandings.innerHTML = '<p class="muted">Loading league details…</p>';
+
+                try {
+                    // Fetch standings and league info from API
+                    const res = await fetch('/api/league/' + encodeURIComponent(slug), { credentials: 'same-origin' });
+                    const payload = await (res.clone().text().then(t => {
+                        try { return JSON.parse(t); } catch (e) { return { raw: t }; }
+                    })).catch(() => null);
+
+                    if (!res.ok) {
+                        console.warn('API responded with', res.status, payload);
+                        const msg = (payload && payload.msg) ? payload.msg : (payload && payload.raw) ? payload.raw : res.statusText || 'Error fetching league';
+                        leagueMiniStandings.innerHTML = `<p class="muted">${escapeHtml(String(msg))}</p>`;
+                        return;
+                    }
+
+                    if (payload && payload.league) {
+                        leagueMiniTitle.textContent = payload.league.name || title || 'League';
+                        leagueMiniVenue.textContent = payload.league.venue || '';
+                    }
+
+                    const rows = (payload && payload.standings) ? payload.standings : [];
+                    if (rows.length === 0) {
+                        leagueMiniStandings.innerHTML = '<p class="muted">No standings available.</p>';
+                    } else {
+                        const trs = rows.map(r => `<tr${(r.username && r.username.toLowerCase().includes((window.currentUsername||'').toLowerCase())) ? ' class="you"' : ''}><td>${r.position||''}</td><td>${escapeHtml(r.username||'')}</td><td>${r.wins||0}</td><td>${r.losses||0}</td><td>${r.points||0}</td></tr>`).join('');
+                        leagueMiniStandings.innerHTML = `<table class="standings-table" style="width:100%;border-collapse:collapse;"><thead><tr><th style="text-align:left">Pos</th><th style="text-align:left">Name</th><th>W</th><th>L</th><th>Pts</th></tr></thead><tbody>${trs}</tbody></table>`;
+                    }
+
+                    // No enter button on profile modal; joining is handled on the leagues page
+                } catch (err) {
+                    console.error('Could not load league fragment', err);
+                    leagueMiniStandings.innerHTML = '<p class="muted">Could not load league details.</p>';
+                    leagueMiniEnter.disabled = true;
+                }
+
+                leagueMiniModal.style.display = 'flex';
+                leagueMiniModal.setAttribute('aria-hidden', 'false');
+            }
+
+            function closeIframeModal(){
+                if(!leagueMiniModal) return;
+                leagueMiniModal.style.display = 'none';
+                leagueMiniModal.setAttribute('aria-hidden', 'true');
+            }
+
+            leagueMiniClose && leagueMiniClose.addEventListener('click', closeIframeModal);
+            leagueMiniClose2 && leagueMiniClose2.addEventListener('click', closeIframeModal);
+
+            // Enter/join removed from profile modal — joining must be done from the leagues page
+
+            // Delegate clicks on view links to open mini modal instead of navigating
+            document.addEventListener('click', function(e){
+                const a = e.target.closest && e.target.closest('a.btn');
+                if(!a) return;
+                if(a.href && a.href.indexOf('/leagues?league=') !== -1){
+                    e.preventDefault();
+                    const params = new URL(a.href, window.location.origin).searchParams;
+                    const slug = params.get('league');
+                    const title = a.closest('.profile-league-card') && a.closest('.profile-league-card').querySelector('h4') && a.closest('.profile-league-card').querySelector('h4').textContent;
+                    openIframeModal(slug, title);
+                }
+            });
     </script>
 </body>
 </html>

@@ -204,6 +204,186 @@ app.get("/current-user", function (req, res) {
   });
 });
 
+// User-specific lists: current leagues, upcoming matches, previous leagues
+app.get('/user/leagues', function (req, res) {
+  if (!req.session.user) {
+    res.status(401).send({ msg: 'Please log in' });
+    return;
+  }
+  const username = req.session.user;
+  model.selectUserLeagues(username, function (result) {
+    res.json(result || []);
+  });
+});
+
+app.get('/user/next-matches', function (req, res) {
+  if (!req.session.user) {
+    res.status(401).send({ msg: 'Please log in' });
+    return;
+  }
+  const username = req.session.user;
+  model.selectUserNextMatches(username, function (result) {
+    res.json(result || []);
+  });
+});
+
+app.get('/user/previous-leagues', function (req, res) {
+  if (!req.session.user) {
+    res.status(401).send({ msg: 'Please log in' });
+    return;
+  }
+  const username = req.session.user;
+  model.selectUserPreviousLeagues(username, function (result) {
+    res.json(result || []);
+  });
+});
+
+// API: get league standings and basic info by slug
+app.get('/api/league/:slug', function (req, res) {
+  const slug = req.params.slug;
+  if (!slug) return res.status(400).send({ msg: 'Slug required' });
+  model.selectLeagueStandingsBySlug(slug, function (result) {
+    if (!result) {
+      console.error('selectLeagueStandingsBySlug returned null for', slug);
+      return res.status(500).send({ msg: 'Error fetching standings' });
+    }
+    if (result.error) {
+      console.error('selectLeagueStandingsBySlug error for', slug, result);
+      if (result.error === 'no_league') return res.status(404).send({ msg: 'League not found' });
+      return res.status(500).send({ msg: result.message || 'Error fetching standings' });
+    }
+    res.json(result);
+  });
+});
+
+// GET reviews for a league
+app.get('/api/league/:slug/reviews', function (req, res) {
+  const slug = req.params.slug;
+  if (!slug) return res.status(400).send({ msg: 'Slug required' });
+  if (!model.selectReviewsByLeagueSlug) return res.status(501).send({ msg: 'Reviews not supported' });
+  model.selectReviewsByLeagueSlug(slug, function (rows) {
+    res.json(rows || []);
+  });
+});
+
+// DELETE a review by id (only owner allowed)
+app.delete('/api/reviews/:id', function (req, res) {
+  if (!req.session.user) return res.status(401).send({ msg: 'Please log in' });
+  const id = req.params.id;
+  if (!id) return res.status(400).send({ msg: 'Review id required' });
+  if (!model.deleteReviewByIdIfOwner) return res.status(501).send({ msg: 'Review deletion not supported' });
+  const username = req.session.user;
+  model.deleteReviewByIdIfOwner(username, id, function (result) {
+    if (!result) return res.status(500).send({ msg: 'Error deleting review' });
+    if (result.error) return res.status(500).send({ msg: result.error });
+    if (result.deleted && result.deleted > 0) return res.json({ msg: 'Deleted' });
+    return res.status(403).send({ msg: 'Not authorized or not found' });
+  });
+});
+
+// Create a review for a league
+app.post('/api/league/:slug/reviews', function (req, res) {
+  if (!req.session.user) return res.status(401).send({ msg: 'Please log in' });
+  const slug = req.params.slug;
+  if (!slug) return res.status(400).send({ msg: 'Slug required' });
+  if (!model.addReviewToLeagueBySlug) return res.status(501).send({ msg: 'Review creation not supported' });
+  const username = req.session.user;
+  const rating = typeof req.body.rating === 'number' ? req.body.rating : parseInt(req.body.rating, 10) || 0;
+  const text = req.body.text || req.body.comment || '';
+  model.addReviewToLeagueBySlug(username, slug, rating, text, function (result) {
+    if (!result) return res.status(500).send({ msg: 'Error creating review' });
+    if (result.error) return res.status(500).send({ msg: result.error });
+    return res.status(201).json({ msg: 'Created', id: result.insertId || result.insertId });
+  });
+});
+
+// Update a review (owner only)
+app.put('/api/reviews/:id', function (req, res) {
+  if (!req.session.user) return res.status(401).send({ msg: 'Please log in' });
+  const id = req.params.id;
+  if (!id) return res.status(400).send({ msg: 'Review id required' });
+  if (!model.updateReviewByIdIfOwner) return res.status(501).send({ msg: 'Review update not supported' });
+  const username = req.session.user;
+  const rating = typeof req.body.rating === 'number' ? req.body.rating : parseInt(req.body.rating, 10) || 0;
+  const text = req.body.text || req.body.comment || '';
+  model.updateReviewByIdIfOwner(username, id, rating, text, function (result) {
+    if (!result) return res.status(500).send({ msg: 'Error updating review' });
+    if (result.error) return res.status(500).send({ msg: result.error });
+    if (result.updated && result.updated > 0) return res.json({ msg: 'Updated' });
+    return res.status(403).send({ msg: 'Not authorized or not found' });
+  });
+});
+
+// Join a league (requires session). Accepts { slug } in the JSON body.
+app.post('/user/join-league', function (req, res) {
+  if (!req.session.user) {
+    res.status(401).send({ msg: 'Please log in' });
+    return;
+  }
+  const slug = req.body.slug || req.body.league;
+  if (!slug) {
+    res.status(400).send({ msg: 'League slug required' });
+    return;
+  }
+  const username = req.session.user;
+  model.addUserToLeagueBySlug(username, slug, function (result) {
+    if (!result) {
+      res.status(500).send({ msg: 'Could not join league' });
+      return;
+    }
+    if (result.inserted) {
+      res.json({ msg: 'Joined league', inserted: true, username });
+      return;
+    }
+    if (result.alreadyJoined) {
+      res.json({ msg: 'Already a member', alreadyJoined: true, username });
+      return;
+    }
+    if (result.error === 'no_user') {
+      res.status(404).send({ msg: 'User not found' });
+      return;
+    }
+    if (result.error === 'no_league') {
+      res.status(404).send({ msg: 'League not found' });
+      return;
+    }
+    res.status(500).send({ msg: 'Could not join league' });
+  });
+});
+
+// Leave a league (requires session). Accepts { slug } in JSON body.
+app.post('/user/leave-league', function (req, res) {
+  if (!req.session.user) {
+    res.status(401).send({ msg: 'Please log in' });
+    return;
+  }
+  const slug = req.body.slug || req.body.league;
+  if (!slug) {
+    res.status(400).send({ msg: 'League slug required' });
+    return;
+  }
+  const username = req.session.user;
+  model.removeUserFromLeagueBySlug(username, slug, function (result) {
+    if (!result) {
+      res.status(500).send({ msg: 'Could not leave league' });
+      return;
+    }
+    if (result.deleted && result.deleted > 0) {
+      res.json({ msg: 'Left league', deleted: result.deleted });
+      return;
+    }
+    if (result.error === 'no_user') {
+      res.status(404).send({ msg: 'User not found' });
+      return;
+    }
+    if (result.error === 'no_league') {
+      res.status(404).send({ msg: 'League not found' });
+      return;
+    }
+    res.json({ msg: 'Not a member' });
+  });
+});
+
 // Delete user account (requires session)
 app.delete("/delete-account", function (req, res) {
   if (req.session.user == null) {

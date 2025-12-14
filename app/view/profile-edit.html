@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Edit your profile on Darts Hub.">
+    <title>Edit Profile - Darts Hub</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Make edit card match profile blue theme */
+        .card { background: linear-gradient(180deg, rgba(96,165,250,0.06), rgba(96,165,250,0.03)); border:1px solid rgba(96,165,250,0.14); color: var(--text); }
+        /* Primary action buttons use brown to match register */
+        .card .btn.btn-primary { background-color: var(--primary); border: none; color: var(--bg); padding:10px 14px; min-width:150px; }
+        .card .btn-primary:hover { opacity: 0.95; }
+        input[type="text"] { background-color: rgba(255,255,255,0.02); border:1px solid rgba(96,165,250,0.06); color: var(--text); }
+        input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 0 0.25rem rgba(96,165,250,0.12); }
+        /* Ensure edit page content fills viewport so footer sits at bottom */
+        .edit-wrapper { min-height: calc(100vh - 200px); display:flex; align-items:center; }
+
+        /* Delete account button: larger and red */
+        .delete-account-button { background-color: #ef4444; color: #fff; border: none; padding: 12px 16px; font-size: 1rem; border-radius:8px; }
+        .delete-account-button:hover { opacity:0.95; }
+        /* Make action buttons consistent width inside the edit card */
+        .card .btn, .card .delete-account-button { min-width:150px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="/" class="logo">🎯 Darts Hub</a>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">☰</button>
+            <div class="nav-backdrop" id="nav-backdrop" data-visible="false"></div>
+            <nav id="primary-nav" class="primary-nav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/leagues" class="nav-link">Leagues</a></li>
+                    <li><a href="/rankings" class="nav-link">Rankings</a></li>
+                    <li><a href="/profile" class="nav-link">Profile</a></li>
+                    <li><a href="/register" class="nav-link">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <div class="container edit-wrapper" style="padding:40px 0;">
+            <div class="card" style="max-width:900px;margin:0 auto;padding:24px;">
+                <h1>Edit Profile</h1>
+                <form id="editProfileForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editUsername">Username</label>
+                            <input type="text" id="editUsername" name="editUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editAddress">Address</label>
+                            <input type="text" id="editAddress" name="editAddress" placeholder="Enter address">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="saveProfileBtn">Save Changes</button>
+                    <p class="form-status" id="editProfileStatus" role="status"></p>
+                </form>
+                <div style="margin-top:18px;">
+                    <button id="logoutBtn" class="btn logout-button">Log Out</button>
+                    <button id="deleteAccountBtn" class="delete-account-button">Delete Account</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-links">
+                <a href="/about" class="footer-link">About</a>
+                <a href="/privacy" class="footer-link">Privacy</a>
+                <a href="/terms" class="footer-link">Terms</a>
+                <a href="/contact" class="footer-link">Contact</a>
+            </div>
+            <small class="copyright">© 2025 Darts Hub</small>
+        </div>
+    </footer>
+
+    <script src="js/navigation.js"></script>
+    <script>
+        // Minimal edit form behavior copied from previous profile page
+        const editProfileForm = document.getElementById('editProfileForm');
+        const editUsernameInput = document.getElementById('editUsername');
+        const editAddressInput = document.getElementById('editAddress');
+        const editProfileStatus = document.getElementById('editProfileStatus');
+        const saveProfileBtn = document.getElementById('saveProfileBtn');
+
+        function loadEditUser() {
+            fetch('/current-user', { credentials: 'same-origin' })
+                .then(res => {
+                    if (res.status === 401) throw new Error('Unauthorized');
+                    return res.json();
+                })
+                .then(data => {
+                    editUsernameInput.value = data.username || '';
+                    editAddressInput.value = data.address || '';
+                })
+                .catch(err => {
+                    console.error('Load edit user failed', err);
+                });
+        }
+
+        editProfileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newUsername = editUsernameInput.value.trim();
+            const address = editAddressInput.value.trim();
+            if (!newUsername) {
+                editProfileStatus.textContent = 'Username cannot be empty.';
+                editProfileStatus.classList.add('error');
+                return;
+            }
+            saveProfileBtn.disabled = true;
+            saveProfileBtn.textContent = 'Saving...';
+
+            fetch('/profile', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: newUsername, address }),
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.msg || 'Update failed');
+                editProfileStatus.textContent = data.msg || 'Profile updated.';
+                editProfileStatus.classList.add('success');
+            })
+            .catch(err => {
+                editProfileStatus.textContent = err.message || 'Update failed.';
+                editProfileStatus.classList.add('error');
+            })
+            .finally(() => {
+                saveProfileBtn.disabled = false;
+                saveProfileBtn.textContent = 'Save Changes';
+            });
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', function () {
+            fetch('/logout', { credentials: 'same-origin' })
+                .then(() => window.location.href = '/')
+                .catch(() => window.location.href = '/');
+        });
+
+        document.getElementById('deleteAccountBtn').addEventListener('click', function () {
+            if (!confirm('Are you sure you want to delete your account?')) return;
+            fetch('/delete-account', { method: 'DELETE', credentials: 'same-origin' })
+                .then(res => res.json())
+                .then(() => window.location.href = '/')
+                .catch(() => alert('Delete failed.'));
+        });
+
+        loadEditUser();
+    </script>
+</body>
+</html>
